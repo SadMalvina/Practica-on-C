@@ -1,0 +1,125 @@
+#include <stdio.h>
+#include <conio.h>
+
+// Structure for storing information about a single bus
+typedef struct tagITEM
+{
+  int numberroute;
+  int busfleetnumber;
+  int starttime; 
+  int endtime;
+  int routekm;
+} ITEM;
+// Array for a maximum of 100 buses
+    ITEM Bus[100];
+// Number of occupied elements in the array
+    int Number;
+
+// A function to display all of the elements
+void Print( void )
+{
+  int i;
+  printf(" N  NumberRoute      BusFleetNumber      StartTime      EndTime      RouteKm\n");
+  for (i = 0; i < Number; i++)
+    printf("%2i. %5i %5i %3i\n", i + 1, Bus[i].numberroute, Bus[i].busfleetnumber,
+           Bus[i].starttime, Bus[i].endtime, Bus[i].routekm);
+} // End of 'Print' function
+
+// Function for adding an element
+void Add( void )
+{
+  if (Number == 99)
+  {
+    fprintf(stderr, "You can't add another element\n");
+    return;
+  }
+
+  printf("Enter number route > ");
+  scanf("%i", &Bus[Number].numberroute);
+  printf("Enter bus fleet number > ");
+  scanf("%i", &Bus[Number].busfleetnumber);
+  printf("Enter start time > ");
+  scanf("%i", &Bus[Number].starttime);
+  printf("Enter end time > ");
+  scanf("%i", &Bus[Number].endtimetime);
+  printf("Enter route in km > ");
+  scanf("%i", &Bus[Number].routekm);
+
+  Number ++;
+} // End of 'Add' function
+
+// Function for deleting an element
+void Del( void )
+{
+  int i;
+
+  Print();
+  printf("Enter the number of the item to delete > ");
+  scanf("%i", &i);
+  if (i < 1 || i > Number)
+  {
+    fprintf(stderr, "The element with the number %i does not exist\n", i);
+    return;
+  }
+
+  for (i --; i < Number - 1; i++)
+    Bus[i] = Bus[i + 1];
+
+  Number --;
+} // End of 'Del' function
+
+// Function for saving an array in a file
+void Save( void )
+{
+  FILE *F;
+  int i;
+
+  if ((F = fopen("task1.dat", "wt")) == NULL)
+  {
+    fprintf(stderr, "The file cannot be opened for writing 'task1.dta'\n");
+    return;
+  }
+
+  fprintf(F, "%i\n", Number);
+  for (i = 0; i < Number; i++)
+    fprintf(F, "%i\n%i\n%i\n%i\n%i\n", Bus[i].numberroute, Bus[i].busfleetnumber,
+    Bus[i].starttime, Bus[i].endtime, Bus[i].routekm);
+
+  fclose(F);
+} // End of 'Save' function
+
+// Function for reading an array from a file
+void Load( void )
+{
+  FILE *F;
+  int i;
+
+  if ((F = fopen("task1.dat", "rt")) == NULL)
+  {
+    fprintf(stderr, "The file cannot be opened for reading 'task1.dta'\n");
+    return;
+  }
+
+  fscanf(F, "%i", &Number);
+  for (i = 0; i < Number; i++)
+    fscanf(F, "%i\n%i\n%i\n%i\n%i\n", &Bus[i].numberroute, &Bus[i].busfleetnumber,
+    &Bus[i].starttime, &Bus[i].endtime, &Bus[i].routekm);
+
+  fclose(F);
+} // End of 'Load' function
+
+/* Функция для упорядочивания массива по фамилии */
+void SortNumberRoute( void )
+{
+  int i, j;
+  ITEM Temp;
+
+  for (j = Number - 1; j > 0; j --)
+    for (i = 0; i < j; i ++)
+      if (strcmp(Bus[i].numberroute, Bus[i + 1].numberroute) > 0)
+      {
+        Temp = Bus[i];
+        Bus[i] = Bus[i + 1];
+        Bus[i + 1] = Temp;
+      }
+} /* End of 'Sort' function */
