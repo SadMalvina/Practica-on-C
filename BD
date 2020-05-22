@@ -1,9 +1,9 @@
 #include <stdio.h>
 #include <conio.h>
+#include <string.h>
 
 // Structure for storing information about a single bus
-typedef struct tagITEM
-{
+typedef struct tagITEM {
   int numberroute;
   int busfleetnumber;
   int starttime; 
@@ -16,18 +16,21 @@ typedef struct tagITEM
     int Number;
 
 // A function to display all of the elements
-void Print( void )
-{
+void Print( void ) {
   int i;
-  printf(" N  NumberRoute      BusFleetNumber      StartTime      EndTime      RouteKm\n");
-  for (i = 0; i < Number; i++)
-    printf("%2i. %5i %5i %3i\n", i + 1, Bus[i].numberroute, Bus[i].busfleetnumber,
+    printf("╔═══╦═══════════╦══════════════╦═════════╦═══════╦═══════╗\n");
+    printf("║ N ║NumberRoute║BusFleetNumber║StartTime║EndTime║RouteKm║\n");
+  for (i = 0; i < Number; i++) {
+      printf ("╠═══╬═══════════╬══════════════╬═════════╬═══════╬═══════╣\n");
+    printf("║%3i║%11i║%14i║%9i║%7i║%7i║\n",
+    i + 1, Bus[i].numberroute, Bus[i].busfleetnumber,
            Bus[i].starttime, Bus[i].endtime, Bus[i].routekm);
+  }
+  printf ("╚═══╩═══════════╩══════════════╩═════════╩═══════╩═══════╝\n");
 } // End of 'Print' function
 
 // Function for adding an element
-void Add( void )
-{
+void Add( void ) {
   if (Number == 99)
   {
     fprintf(stderr, "You can't add another element\n");
@@ -41,11 +44,11 @@ void Add( void )
   printf("Enter start time > ");
   scanf("%i", &Bus[Number].starttime);
   printf("Enter end time > ");
-  scanf("%i", &Bus[Number].endtimetime);
+  scanf("%i", &Bus[Number].endtime);
   printf("Enter route in km > ");
   scanf("%i", &Bus[Number].routekm);
 
-  Number ++;
+  Number++;
 } // End of 'Add' function
 
 // Function for deleting an element
@@ -62,31 +65,171 @@ void Del( void )
     return;
   }
 
-  for (i --; i < Number - 1; i++)
+  for (i--; i < Number - 1; i++)
     Bus[i] = Bus[i + 1];
 
   Number --;
 } // End of 'Del' function
 
-// Function for saving an array in a file
-void Save( void )
+// Function for ordering an array by number route
+void SortNumberRoute( void )
 {
-  FILE *F;
-  int i;
+  int i, j;
+  ITEM Temp;
 
-  if ((F = fopen("task1.dat", "wt")) == NULL)
-  {
-    fprintf(stderr, "The file cannot be opened for writing 'task1.dta'\n");
-    return;
-  }
+  for (j = Number - 1; j > 0; j --)
+    for (i = 0; i < j; i ++)
+      if ((Bus[i].numberroute > Bus[i + 1].numberroute) > 0)
+      {
+        Temp = Bus[i];
+        Bus[i] = Bus[i + 1];
+        Bus[i + 1] = Temp;
+      }
+} // End of 'SortNumberRoute' function
 
-  fprintf(F, "%i\n", Number);
-  for (i = 0; i < Number; i++)
-    fprintf(F, "%i\n%i\n%i\n%i\n%i\n", Bus[i].numberroute, Bus[i].busfleetnumber,
-    Bus[i].starttime, Bus[i].endtime, Bus[i].routekm);
+// Function for ordering an array by number route
+void SortNumberRouteUbyvanie( void )
+{
+  int i, j;
+  ITEM Temp;
 
-  fclose(F);
-} // End of 'Save' function
+  for (j = Number - 1; j > 0; j --)
+    for (i = 0; i < j; i ++)
+      if ((Bus[i].numberroute < Bus[i + 1].numberroute) > 0)
+      {
+        Temp = Bus[i];
+        Bus[i] = Bus[i + 1];
+        Bus[i + 1] = Temp;
+      }
+} // End of 'SortNumberRouteUbyvanie' function
+
+// Function for ordering an array by bus fleet number
+void SortBusFleetNumber( void )
+{
+  int i, j;
+  ITEM Temp;
+
+  for (j = Number - 1; j > 0; j --)
+    for (i = 0; i < j; i ++)
+      if ((Bus[i].busfleetnumber > Bus[i + 1].busfleetnumber) > 0)
+      {
+        Temp = Bus[i];
+        Bus[i] = Bus[i + 1];
+        Bus[i + 1] = Temp;
+      }
+} // End of 'SortBusFleetNumber' function
+
+// Function for ordering an array by bus fleet number
+void SortBusFleetNumberUbyvanie( void )
+{
+  int i, j;
+  ITEM Temp;
+
+  for (j = Number - 1; j > 0; j --)
+    for (i = 0; i < j; i ++)
+      if ((Bus[i].busfleetnumber < Bus[i + 1].busfleetnumber) > 0)
+      {
+        Temp = Bus[i];
+        Bus[i] = Bus[i + 1];
+        Bus[i + 1] = Temp;
+      }
+} // End of 'SortBusFleetNumberUbyvanie' function
+
+// Function for ordering an array by start time
+void SortStartTime( void )
+{
+  int i, j;
+  ITEM Temp;
+
+  for (j = Number - 1; j > 0; j --)
+    for (i = 0; i < j; i ++)
+      if ((Bus[i].starttime > Bus[i + 1].starttime) > 0)
+      {
+        Temp = Bus[i];
+        Bus[i] = Bus[i + 1];
+        Bus[i + 1] = Temp;
+      }
+} // End of 'SortStartTime' function
+
+// Function for ordering an array by start time
+void SortStartTimeUbyvanie( void )
+{
+  int i, j;
+  ITEM Temp;
+
+  for (j = Number - 1; j > 0; j --)
+    for (i = 0; i < j; i ++)
+      if ((Bus[i].starttime < Bus[i + 1].starttime) > 0)
+      {
+        Temp = Bus[i];
+        Bus[i] = Bus[i + 1];
+        Bus[i + 1] = Temp;
+      }
+} // End of 'SortStartTimeUbyvanie' function
+
+// Function for ordering an array by end time
+void SortEndTime( void )
+{
+  int i, j;
+  ITEM Temp;
+
+  for (j = Number - 1; j > 0; j --)
+    for (i = 0; i < j; i ++)
+      if ((Bus[i].endtime > Bus[i + 1].endtime) > 0)
+      {
+        Temp = Bus[i];
+        Bus[i] = Bus[i + 1];
+        Bus[i + 1] = Temp;
+      }
+} // End of 'SortEndTime' function
+
+// Function for ordering an array by end time
+void SortEndTimeUbyvanie( void )
+{
+  int i, j;
+  ITEM Temp;
+
+  for (j = Number - 1; j > 0; j --)
+    for (i = 0; i < j; i ++)
+      if ((Bus[i].endtime < Bus[i + 1].endtime) > 0)
+      {
+        Temp = Bus[i];
+        Bus[i] = Bus[i + 1];
+        Bus[i + 1] = Temp;
+      }
+} // End of 'SortEndTimeUbyvanie' function
+
+// Function for ordering an array by route in KM
+void SortRouteKM( void )
+{
+  int i, j;
+  ITEM Temp;
+
+  for (j = Number - 1; j > 0; j --)
+    for (i = 0; i < j; i ++)
+      if ((Bus[i].routekm > Bus[i + 1].routekm) > 0)
+      {
+        Temp = Bus[i];
+        Bus[i] = Bus[i + 1];
+        Bus[i + 1] = Temp;
+      }
+} // End of 'SortRouteKM' function
+
+// Function for ordering an array by route in KM
+void SortRouteKMUbyvanie( void )
+{
+  int i, j;
+  ITEM Temp;
+
+  for (j = Number - 1; j > 0; j --)
+    for (i = 0; i < j; i ++)
+      if ((Bus[i].routekm < Bus[i + 1].routekm) > 0)
+      {
+        Temp = Bus[i];
+        Bus[i] = Bus[i + 1];
+        Bus[i + 1] = Temp;
+      }
+} // End of 'SortRouteKMUbyvanie' function
 
 // Function for reading an array from a file
 void Load( void )
@@ -108,18 +251,140 @@ void Load( void )
   fclose(F);
 } // End of 'Load' function
 
-/* Функция для упорядочивания массива по фамилии */
-void SortNumberRoute( void )
+// Function for saving an array in a file
+void Save( void )
 {
-  int i, j;
-  ITEM Temp;
+  FILE *F;
+  int i;
 
-  for (j = Number - 1; j > 0; j --)
-    for (i = 0; i < j; i ++)
-      if (strcmp(Bus[i].numberroute, Bus[i + 1].numberroute) > 0)
-      {
-        Temp = Bus[i];
-        Bus[i] = Bus[i + 1];
-        Bus[i + 1] = Temp;
-      }
-} /* End of 'Sort' function */
+  if ((F = fopen("task1.dat", "wt")) == NULL)
+  {
+    fprintf(stderr, "The file cannot be opened for writing 'task1.dta'\n");
+    return;
+  }
+
+  fprintf(F, "%i\n", Number);
+  for (i = 0; i < Number; i++)
+    fprintf(F, "%i\n%i\n%i\n%i\n%i\n", Bus[i].numberroute, Bus[i].busfleetnumber,
+    Bus[i].starttime, Bus[i].endtime, Bus[i].routekm);
+
+  fclose(F);
+} // End of 'Save' function
+
+// Display the menu and read the number of the selected item
+int Menu( void )
+{
+  int c = 0;
+
+  while ((c < '0' || c > '6') && c != 27)
+  {
+    printf("╒══════════════════════╕\n"
+           "│     0 : Exit         │\n"
+           "╞══════════════════════╡\n"
+           "│     1 : Add          │\n"
+           "╞══════════════════════╡\n"
+           "│     2 : Save         │\n"
+           "╞══════════════════════╡\n"
+           "│     3 : Download     │\n"
+           "╞══════════════════════╡\n"
+           "│     4 : Bring out    │\n"
+           "╞══════════════════════╡\n"
+           "│     5 : Sort         │\n"
+           "╞══════════════════════╡\n"
+           "│     6 : Remove       │\n"
+           "╘══════════════════════╛\n");
+    c = getch();
+    printf("%c\n", c);
+  }
+  return c;
+} /* End of 'Menu' function */
+
+// Display the menu and read the number of the selected item sort
+int MenuSort( void )
+{
+  int c = 0;
+
+  while ((c < '0' || c > '5') && c != 27)
+  {
+    printf("╒═══════════════════════════╕\n"
+           "│    0 : Return             │\n"
+           "╞═══════════════════════════╡\n"
+           "│    1 : Number Route       │\n"
+           "╞═══════════════════════════╡\n"
+           "│    2 : Bus Fleet Number   │\n"
+           "╞═══════════════════════════╡\n"
+           "│    3 : Start Time         │\n"
+           "╞═══════════════════════════╡\n"
+           "│    4 : End Time           │\n"
+           "╞═══════════════════════════╡\n"
+           "│    5 : Route KM           │\n"
+           "╘═══════════════════════════╛\n");
+    c = getch();
+    printf("%c\n", c);
+  }
+  return c;
+} // End of 'MenuSort' function
+
+// The function of the main menu
+void main( void )
+{
+  int Selection;
+
+  while ((Selection = Menu()) != '0' && Selection != 27)
+    switch (Selection)
+    {
+    case '1':
+      Add();
+      break;
+    case '2':
+      Save();
+      break;
+    case '3':
+      Load();
+      break;
+    case '4':
+      Print();
+      break;
+    case '5':
+      MenuSort();
+      break;
+    case '6':
+      Del();
+      break;
+    }
+} // End the function of the main menu
+
+// Sorting menu function
+void mainsort( void )
+{
+  int Selection;
+
+  while ((Selection = MenuSort()) != '0' && Selection != 27)
+    switch (Selection)
+    {
+    case '0':
+      main();
+      break;
+    case '1':
+      SortNumberRoute();
+      break;
+    case '2':
+      SortBusFleetNumber();
+      break;
+    case '3':
+      SortStartTime();
+      break;
+    case '4':
+      SortEndTime();
+      break;
+    case '5':
+      SortRouteKM();
+      break;
+    }
+} //End sorting menu function
+
+
+
+
+
+
