@@ -13,7 +13,7 @@ typedef struct tagITEM {
 // Array for a maximum of 100 buses
     ITEM Bus[100];
 // Number of occupied elements in the array
-    int Number;
+    int Number = 0;
 
 // A function to display all of the elements
 void Print( void ) {
@@ -37,15 +37,25 @@ void Add( void ) {
     return;
   }
 
-  printf("Enter number route > ");
+  printf ("╔══════════════════════════╗\n");
+  printf ("║Enter number route >      ║\n");
+  printf ("╚══════════════════════════╝\n");
   scanf("%i", &Bus[Number].numberroute);
-  printf("Enter bus fleet number > ");
+  printf ("╔══════════════════════════╗\n");
+  printf ("║Enter bus fleet number >  ║\n");
+  printf ("╚══════════════════════════╝\n");
   scanf("%i", &Bus[Number].busfleetnumber);
-  printf("Enter start time > ");
+  printf ("╔══════════════════════════╗\n");
+  printf ("║Enter start time >        ║\n");
+  printf ("╚══════════════════════════╝\n");
   scanf("%i", &Bus[Number].starttime);
-  printf("Enter end time > ");
+  printf ("╔══════════════════════════╗\n");
+  printf ("║Enter end time >          ║\n");
+  printf ("╚══════════════════════════╝\n");
   scanf("%i", &Bus[Number].endtime);
-  printf("Enter route in km > ");
+  printf ("╔══════════════════════════╗\n");
+  printf ("║Enter route in km >       ║\n");
+  printf ("╚══════════════════════════╝\n");
   scanf("%i", &Bus[Number].routekm);
 
   Number++;
@@ -279,25 +289,41 @@ int Menu( void )
   while ((c < '0' || c > '6') && c != 27)
   {
     printf("╒══════════════════════╕\n"
-           "│     0 : Exit         │\n"
+           "│    0 : Exit          │\n"
            "╞══════════════════════╡\n"
-           "│     1 : Add          │\n"
+           "│    1 : Add           │\n"
            "╞══════════════════════╡\n"
-           "│     2 : Save         │\n"
+           "│    2 : Save in file  │\n"
            "╞══════════════════════╡\n"
-           "│     3 : Download     │\n"
+           "│    3 : Download      │\n"
            "╞══════════════════════╡\n"
-           "│     4 : Bring out    │\n"
+           "│    4 : Print         │\n"
            "╞══════════════════════╡\n"
-           "│     5 : Sort         │\n"
+           "│    5 : Sort          │\n"
            "╞══════════════════════╡\n"
-           "│     6 : Remove       │\n"
+           "│    6 : Delete        │\n"
            "╘══════════════════════╛\n");
-    c = getch();
-    printf("%c\n", c);
+    c = getchar ();
+    fflush(stdin);
+    //printf("%c\n", c);
   }
   return c;
 } /* End of 'Menu' function */
+
+int MenuSortChoice (void) {
+    int c = 0;
+    
+    while ((c < '0' || c > '1') && c != 27) {
+        printf ("╔══════════════════════════════════╗\n");
+        printf ("║      Select the sort type:       ║\n");
+        printf ("╠════════════════╦╦════════════════╣\n");
+        printf ("║  0 - Decrease  ║║  1 - Increase  ║\n");
+        printf ("╚════════════════╩╩════════════════╝\n");
+        c = getchar ();
+        fflush(stdin);
+    }
+    return c;
+}
 
 // Display the menu and read the number of the selected item sort
 int MenuSort( void )
@@ -306,24 +332,50 @@ int MenuSort( void )
 
   while ((c < '0' || c > '5') && c != 27)
   {
-    printf("╒═══════════════════════════╕\n"
-           "│    0 : Return             │\n"
-           "╞═══════════════════════════╡\n"
-           "│    1 : Number Route       │\n"
-           "╞═══════════════════════════╡\n"
-           "│    2 : Bus Fleet Number   │\n"
-           "╞═══════════════════════════╡\n"
-           "│    3 : Start Time         │\n"
-           "╞═══════════════════════════╡\n"
-           "│    4 : End Time           │\n"
-           "╞═══════════════════════════╡\n"
-           "│    5 : Route KM           │\n"
-           "╘═══════════════════════════╛\n");
-    c = getch();
-    printf("%c\n", c);
+    printf("╒════════════════════════════╕\n"
+           "│    0 : Return              │\n"
+           "╞════════════════════════════╡\n"
+           "│    1 : Number Route        │\n"
+           "╞════════════════════════════╡\n"
+           "│    2 : Bus Fleet Number    │\n"
+           "╞════════════════════════════╡\n"
+           "│    3 : Start Time          │\n"
+           "╞════════════════════════════╡\n"
+           "│    4 : End Time            │\n"
+           "╞════════════════════════════╡\n"
+           "│    5 : Route KM            │\n"
+           "╘════════════════════════════╛\n");
+    c = getchar ();
+    fflush(stdin);
   }
   return c;
 } // End of 'MenuSort' function
+
+// Display the menu and read the number of the selected item sort
+int MenuSortD( void )
+{
+  int c = 0;
+
+  while ((c < '0' || c > '5') && c != 27)
+  {
+    printf("╒════════════════════════════╕\n"
+           "│    0 : Return              │\n"
+           "╞════════════════════════════╡\n"
+           "│    1 : Number Route        │\n"
+           "╞════════════════════════════╡\n"
+           "│    2 : Bus Fleet Number    │\n"
+           "╞════════════════════════════╡\n"
+           "│    3 : Start Time          │\n"
+           "╞════════════════════════════╡\n"
+           "│    4 : End Time            │\n"
+           "╞════════════════════════════╡\n"
+           "│    5 : Route KM            │\n"
+           "╘════════════════════════════╛\n");
+    c = getchar ();
+    fflush(stdin);
+  }
+  return c;
+} // End of 'MenuSortD' function
 
 // The function of the main menu
 void main( void )
@@ -334,25 +386,44 @@ void main( void )
     switch (Selection)
     {
     case '1':
+      Print();
       Add();
       break;
     case '2':
+      Print();
       Save();
       break;
     case '3':
+      Print();
       Load();
       break;
     case '4':
       Print();
       break;
     case '5':
-      MenuSort();
+      MenuSortChoice();
+      Print();
       break;
     case '6':
       Del();
+      Print();
       break;
     }
 } // End the function of the main menu
+
+void TypeSort (void) {
+    int Selection;
+    
+    while ((Selection = MenuSortChoice()) != '0' && Selection != 27)
+    switch (Selection) {
+        case '0':
+        MenuSort();
+        break;
+        case '1':
+        MenuSortD();
+        break;
+    }
+}
 
 // Sorting menu function
 void mainsort( void )
@@ -367,24 +438,53 @@ void mainsort( void )
       break;
     case '1':
       SortNumberRoute();
+      Print();
       break;
     case '2':
       SortBusFleetNumber();
+      Print();
       break;
     case '3':
       SortStartTime();
+      Print();
       break;
     case '4':
       SortEndTime();
+      Print();
       break;
     case '5':
       SortRouteKM();
+      Print();
       break;
     }
 } //End sorting menu function
 
-
-
-
-
-
+int mainsortD (void) {
+    int Selection;
+    while ((Selection = MenuSortD()) != '0' && Selection != 27)
+    switch (Selection) {
+        case '0':
+          main();
+          break;
+        case '1':
+          SortNumberRouteUbyvanie();
+          Print();
+          break;
+        case '2':
+          SortBusFleetNumberUbyvanie();
+          Print();
+          break;
+        case '3':
+          SortStartTimeUbyvanie();
+          Print();
+          break;
+        case '4':
+          SortEndTimeUbyvanie();
+          Print();
+          break;
+        case '5':
+          SortRouteKMUbyvanie();
+          Print();
+          break;
+    }
+}
