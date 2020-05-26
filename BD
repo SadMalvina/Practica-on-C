@@ -31,6 +31,7 @@ void Print( void ) {
 
 // Function for adding an element
 void Add( void ) {
+char a;
   if (Number == 99)
   {
     fprintf(stderr, "You can't add another element\n");
@@ -40,23 +41,43 @@ void Add( void ) {
   printf ("╔══════════════════════════╗\n");
   printf ("║Enter number route >      ║\n");
   printf ("╚══════════════════════════╝\n");
-  scanf("%i", &Bus[Number].numberroute);
+  do {
+    a = getchar();
+    Bus[Number].numberroute) = a;
+    } while (a != '\n');
+  //scanf("%i", &Bus[Number].numberroute);
   printf ("╔══════════════════════════╗\n");
   printf ("║Enter bus fleet number >  ║\n");
   printf ("╚══════════════════════════╝\n");
-  scanf("%i", &Bus[Number].busfleetnumber);
+  do {
+    a = getchar();
+    Bus[Number].busfleetnumber) = a;
+    } while (a != '\n');
+  //scanf("%i", &Bus[Number].busfleetnumber);
   printf ("╔══════════════════════════╗\n");
   printf ("║Enter start time >        ║\n");
   printf ("╚══════════════════════════╝\n");
-  scanf("%i", &Bus[Number].starttime);
+  do {
+    a = getchar();
+    Bus[Number].starttime) = a;
+    } while (a != '\n');
+  //scanf("%i", &Bus[Number].starttime);
   printf ("╔══════════════════════════╗\n");
   printf ("║Enter end time >          ║\n");
   printf ("╚══════════════════════════╝\n");
-  scanf("%i", &Bus[Number].endtime);
+  do {
+    a = getchar();
+    Bus[Number].endtime) = a;
+    } while (a != '\n');
+  //scanf("%i", &Bus[Number].endtime);
   printf ("╔══════════════════════════╗\n");
   printf ("║Enter route in km >       ║\n");
   printf ("╚══════════════════════════╝\n");
-  scanf("%i", &Bus[Number].routekm);
+  do {
+    a = getchar();
+    Bus[Number].routekm) = a;
+    } while (a != '\n');
+  //scanf("%i", &Bus[Number].routekm);
 
   Number++;
 } // End of 'Add' function
@@ -65,10 +86,15 @@ void Add( void ) {
 void Del( void )
 {
   int i;
+  char d;
 
   Print();
   printf("Enter the number of the item to delete > ");
-  scanf("%i", &i);
+  do {
+    d = getchar();
+    i = d;
+    } while (d != '\n');
+  //scanf("%i", &i);
   if (i < 1 || i > Number)
   {
     fprintf(stderr, "The element with the number %i does not exist\n", i);
@@ -80,6 +106,58 @@ void Del( void )
 
   Number --;
 } // End of 'Del' function
+
+//Function change information
+void Change (void) {
+    char a;
+    int tapok, Num = 0;
+    Print();
+    printf ("╔════════════════════════════════════════════════════════════╗\n");
+    printf ("║                                                            ║\n");
+    printf ("║    Enter the line number where you want to make changes    ║\n");
+    printf ("║                                                            ║\n");
+    printf ("╚════════════════════════════════════════════════════════════╝\n");
+    do {
+    a = getchar();
+    Num = a;
+    } while (a != '\n');
+    //scanf ("%d", &Num);
+    printf ("╔════════════════════════════════════════════════════════════╗\n");
+    printf ("║                                                            ║\n");
+    printf ("║         Enter the desired character to change:             ║\n");
+    printf ("║                                                            ║\n");
+    printf ("╠════════════════════════════════════════════════════════════╣\n");
+    printf ("║                                                            ║\n");
+    printf ("║                 1 > Number Route                           ║\n");
+    printf ("║                 2 > Bus Fleet Number                       ║\n");
+    printf ("║                 3 > Start Time                             ║\n");
+    printf ("║                 4 > End Time                               ║\n");
+    printf ("║                 5 > Route in KM                            ║\n");
+    printf ("║                                                            ║\n");
+    printf ("╚════════════════════════════════════════════════════════════╝\n");
+    do {
+    a = getchar();
+    tapok = a;
+    } while (a != '\n');
+    //scanf ("%d", tapok);
+    switch (tapok) {
+        case '1':
+        scanf ("%d", &Bus[Num].numberroute);
+        break;
+        case '2':
+        scanf ("%d", &Bus[Num].busfleetnumber);
+        break;
+        case '3':
+        scanf ("%d", &Bus[Num].starttime);
+        break;
+        case '4':
+        scanf ("%d", &Bus[Num].endtime);
+        break;
+        case '5':
+        scanf ("%d", &Bus[Num].routekm);
+        break;
+    }
+} 
 
 // Function for ordering an array by number route
 void SortNumberRoute( void )
@@ -286,7 +364,7 @@ int Menu( void )
 {
   int c = 0;
 
-  while ((c < '0' || c > '6') && c != 27)
+  while ((c < '0' || c > '7') && c != 27)
   {
     printf("╒══════════════════════╕\n"
            "│    0 : Exit          │\n"
@@ -302,6 +380,8 @@ int Menu( void )
            "│    5 : Sort          │\n"
            "╞══════════════════════╡\n"
            "│    6 : Delete        │\n"
+           "╞══════════════════════╡\n"
+           "│    7 : Change        │\n"
            "╘══════════════════════╛\n");
     c = getchar ();
     fflush(stdin);
@@ -406,6 +486,10 @@ void main( void )
       break;
     case '6':
       Del();
+      Print();
+      break;
+    case '7':
+      Change();
       Print();
       break;
     }
