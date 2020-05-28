@@ -1,15 +1,17 @@
 #include <stdio.h>
-#include <conio.h>
 #include <string.h>
 
 // Structure for storing information about a single bus
 typedef struct tagITEM { //Setting a structure with information about buses
-  char numberroute[7]; // Here you can enter an array of characters (a string) with the route number
-  char busfleetnumber[7]; // Here you can enter an array of characters (a string) with the bus fleet number
-  char starttime[5]; // Here you can enter an array of characters (a string) with the start time
-  char endtime[5]; //Here you can enter an array of characters (a string) with the end time
-  char routekm[7]; //Here you can enter an array of characters (a string) with the all route in KM
+  int numberroute; // Here you can enter an array of characters (a string) with the route number
+  int busfleetnumber; // Here you can enter an array of characters (a string) with the bus fleet number
+  int starttimech;
+  int starttimem;// Here you can enter an array of characters (a string) with the start time
+  int endtimech;
+  int endtimem;//Here you can enter an array of characters (a string) with the end time
+  int routekm; //Here you can enter an array of characters with the all route in KM
 } ITEM; // Setting a name for the structure type "ITEM"
+//!RouteKM ввод в метрах приводить к км
 // Array for a maximum of 100 buses
     ITEM Bus[100];
 // Number of occupied elements in the array
@@ -22,9 +24,10 @@ void Print( void ) {
     printf("║ N ║NumberRoute║BusFleetNumber║StartTime║EndTime║RouteKm║\n"); //table when output
   for (i = 0; i < Number; i++) { //Setting the "for" counter to output array elements by number
       printf ("╠═══╬═══════════╬══════════════╬═════════╬═══════╬═══════╣\n");
-    printf("║%3i║%11s║%14s║%9s║%7s║%7s║\n",
+    printf("║%3i║%11i║%14i║    %02i:%02i║  %02i:%02i║%7i║\n",
     i + 1, Bus[i].numberroute, Bus[i].busfleetnumber,
-           Bus[i].starttime, Bus[i].endtime, Bus[i].routekm);
+           Bus[i].starttimech, Bus[i].starttimem, Bus[i].endtimech,
+           Bus[i].endtimem, Bus[i].routekm);
   }
   printf ("╚═══╩═══════════╩══════════════╩═════════╩═══════╩═══════╝\n"); //End of the graphic table
 } // End of 'Print' function
@@ -32,7 +35,7 @@ void Print( void ) {
 // Function for adding an element
 void Add( void ) {
 char a;
-int i = 0; ////Setting the counter
+int i = 0, ch = 0; ////Setting the counter
   if (Number == 99)
   {
     fprintf(stderr, "You can't add another element\n");
@@ -43,108 +46,87 @@ int i = 0; ////Setting the counter
   printf ("║Enter number route >      ║\n");
   printf ("╚══════════════════════════╝\n");
   a = getchar();
-  for (i = 0; (a != '\n' && i < 7); i++) {
-      //a = getchar();
-    while (a != '\n') {
-      Bus[Number].numberroute[i] = a;
+  while (a != '\n') {
+      a = a - 48;
+      ch = ch * 10 + a;
       putchar(a);
       a = getchar();
-    }
-    putchar ('\n');
   }
-  //putchar ('\n');
-  //do {
-  //  a = getchar();
-  //  while (a != '\n') {
-  //      putchar
-  //  }
-  //  if (a != 13) {
-  //      Bus[Number].numberroute = a;
-  //      i++;
-  //  }
-  //  } while ((i != 0 && i < 4) || (Bus[Number].numberroute != '\n'));
-  //scanf("%i", &Bus[Number].numberroute);
-  i = 0;
+  Bus[Number].numberroute = ch;
+  putchar ('\n');
+  ch = 0;
   printf ("╔══════════════════════════╗\n");
   printf ("║Enter bus fleet number >  ║\n");
   printf ("╚══════════════════════════╝\n");
   a = getchar();
-  for (i = 0; (a != '\n' && i < 7); i++) {
-      //a = getchar ();
-    while (a != '\n') {
-      Bus[Number].busfleetnumber[i] = a;
+  while (a != '\n') {
+      a = a - 48;
+      ch = ch * 10 + a;
       putchar(a);
       a = getchar();
-    }
-    putchar ('\n');
   }
-  //putchar ('\n');
-  //do {
-  //  a = getchar();
-  //  Bus[Number].busfleetnumber = a;
-  //  i++;
-  //  } while ((i != 0 && i < 2) || (Bus[Number].busfleetnumber != '\n'));
-  //scanf("%i", &Bus[Number].busfleetnumber);
+  Bus[Number].busfleetnumber = ch;
+  putchar ('\n');
+  ch = 0;
   printf ("╔══════════════════════════╗\n");
   printf ("║Enter start time >        ║\n");
   printf ("╚══════════════════════════╝\n");
   a = getchar();
-  for (i = 0; (i < 5); i++) {
-      //a = getchar();
     while (a != '\n') {
-      Bus[Number].starttime[i] = a;
-      putchar(a);
-      a = getchar();
+        a = a - 48;
+        ch = ch * 10 + a;
+        putchar(a);
+        a = getchar();
     }
-    putchar ('\n');
-  }
-  //putchar ('\n');
-  //do {
-  //  a = getchar();
-  //  Bus[Number].starttime = a;
-  //  i++;
-  // } while ((i != 0 && i < 6) || (Bus[Number].starttime != '\n'));
-  //scanf("%i", &Bus[Number].starttime);
-  printf ("╔══════════════════════════╗\n");
-  printf ("║Enter end time >          ║\n");
-  printf ("╚══════════════════════════╝\n");
-  a = getchar();
-  for (i = 0; (i < 5); i++) {
-      //a = getchar();
+    Bus[Number].starttimech = ch;
+    putchar('\n');
+    ch = 0;
+    a = getchar();
     while (a != '\n') {
-      Bus[Number].endtime[i] = a;
-      putchar(a);
-      a = getchar();
+        a = a - 48;
+        ch = ch * 10 + a;
+        putchar(a);
+        a = getchar();
     }
-    putchar ('\n');
-  }
-  //putchar ('\n');
-  //do {
-  //  a = getchar();
-  //  Bus[Number].endtime = a;
-  //  i++;
-  //  } while ((i != 0 && i < 6) || (Bus[Number].endtime != '\n'));
-  //scanf("%i", &Bus[Number].endtime);
+    Bus[Number].starttimem = ch;
+    putchar('\n');
+  ch = 0;
+    printf ("╔══════════════════════════╗\n");
+    printf ("║Enter end time >          ║\n");
+    printf ("╚══════════════════════════╝\n");
+    a = getchar();
+    while (a != '\n') {
+        a = a - 48;
+        ch = ch * 10 + a;
+        putchar(a);
+        a = getchar();
+    }
+    Bus[Number].endtimech = ch;
+    putchar('\n');
+    ch = 0;
+    a = getchar();
+    while (a != '\n') {
+        a = a - 48;
+        ch = ch * 10 + a;
+        putchar(a);
+        a = getchar();
+    }
+    Bus[Number].endtimem = ch;
+    putchar('\n');
+    ch = 0;
   printf ("╔══════════════════════════╗\n");
   printf ("║Enter route in km >       ║\n");
   printf ("╚══════════════════════════╝\n");
   a = getchar();
-  for (i = 0; ((a != '\n') && (i < 7)); i++) {
-      //a = getchar();
-    while (a != '\n') {
-      Bus[Number].routekm[i] = a;
+  while (a != '\n') {
+      a = a - 48;
+      ch = ch * 10 + a;
       putchar(a);
       a = getchar();
-    }
-    putchar ('\n');
   }
-  //putchar ('\n');
-  //do {
-  //  a = getchar();
-  //  Bus[Number].routekm = a;
-  //  i++;
-  //  } while ((i != 0 && i < 10) || (Bus[Number].routekm != '\n'));
-  //scanf("%i", &Bus[Number].routekm);
+  Bus[Number].routekm = ch;
+  //Bus[Number].routekm = '\0';
+  putchar ('\n');
 
   Number++;
 } // End of 'Add' function
@@ -152,17 +134,15 @@ int i = 0; ////Setting the counter
 // Function for deleting an element
 void Del( void )
 {
-  int i; //Setting the counter
-  char d;
+  char i; //Setting the counter
+  char d, dt;
 
   Print();
   printf("Enter the number of the item to delete > ");
-  do {
-    d = getchar();
-    i = d;
-    } while (d != '\n');
-  //scanf("%i", &i);
-  if (i < 1 || i > Number)
+  i = getchar();
+      i = i - 48;
+      putchar(d);
+  if (i < 0 || i > Number)
   {
     fprintf(stderr, "The element with the number %i does not exist\n", i);
     return;
@@ -172,11 +152,12 @@ void Del( void )
     Bus[i] = Bus[i + 1];
 
   Number --;
+  Print();
 } // End of 'Del' function
 
 //Function change information
 void Change (void) {
-    char a;
+    char a, ch;
     int tapok = 0, Num = 0; //Setting the counters
     Print();
     printf ("╔════════════════════════════════════════════════════════════╗\n");
@@ -184,14 +165,14 @@ void Change (void) {
     printf ("║    Enter the line number where you want to make changes    ║\n");
     printf ("║                                                            ║\n");
     printf ("╚════════════════════════════════════════════════════════════╝\n");
-    tapok = getchar();
-    while (tapok != '\n') {
-      Num = tapok;
-      putchar (tapok);
-      tapok = getchar();
+    a = getchar();
+    while (a != '\n') {
+      a = a - 48;
+      Num = Num * 10 + a;
+      putchar (a);
+      a = getchar();
     }
     putchar ('\n');
-    //scanf ("%d", &Num);
     while ((a < 49 || a > 53) && a != 27) {
         printf ("╔════════════════════════════════════════════════════════════╗\n");
         printf ("║                                                            ║\n");
@@ -206,192 +187,258 @@ void Change (void) {
         printf ("║                 5 > Route in KM                            ║\n");
         printf ("║                                                            ║\n");
         printf ("╚════════════════════════════════════════════════════════════╝\n");
-        tapok = getchar();
-        while (tapok != '\n') {
-          a = tapok;
-          putchar (tapok);
-          tapok = getchar();
-        }
+        a = getchar();
+        tapok = a;
+          putchar (a);
     putchar ('\n');
     }
-    //scanf ("%d", tapok);
     switch (tapok) {
         case 49:
-        scanf ("%s", &Bus[Num].numberroute);
+        a = getchar();
+        while (a != '\n') {
+          a = a - 48;
+          ch = ch * 10 + a;
+          putchar(a);
+          a = getchar();
+        }
+        Bus[Num].numberroute = ch;
+        putchar ('\n');
         break;
         case 50:
-        scanf ("%s", &Bus[Num].busfleetnumber);
+        a = getchar();
+        while (a != '\n') {
+          a = a - 48;
+          ch = ch * 10 + a;
+          putchar(a);
+          a = getchar();
+        }
+        Bus[Num].busfleetnumber = ch;
+        putchar ('\n');
         break;
         case 51:
-        scanf ("%s", &Bus[Num].starttime);
+        a = getchar();
+        while (a != '\n') {
+          a = a - 48;
+          ch = ch * 10 + a;
+          putchar(a);
+          a = getchar();
+        }
+        Bus[Num].starttimech = ch;
+        putchar ('\n');
+        ch = 0;
+        a = getchar();
+        while (a != '\n') {
+          a = a - 48;
+          ch = ch * 10 + a;
+          putchar(a);
+          a = getchar();
+        }
+        Bus[Num].starttimem = ch;
+        putchar ('\n');
         break;
         case 52:
-        scanf ("%s", &Bus[Num].endtime);
+        a = getchar();
+        while (a != '\n') {
+          a = a - 48;
+          ch = ch * 10 + a;
+          putchar(a);
+          a = getchar();
+        }
+        Bus[Num].endtimech = ch;
+        ch = 0;
+        a = getchar();
+        while (a != '\n') {
+          a = a - 48;
+          ch = ch * 10 + a;
+          putchar(a);
+          a = getchar();
+        }
+        Bus[Num].endtimem = ch;
+        putchar ('\n');
         break;
         case 53:
-        scanf ("%s", &Bus[Num].routekm);
+        a = getchar();
+        while (a != '\n') {
+          a = a - 48;
+          ch = ch * 10 + a;
+          putchar(a);
+          a = getchar();
+        }
+        Bus[Num].routekm = ch;
+        putchar ('\n');
         break;
     }
+    Print();
 } 
 
 // Function for ordering an array by number route
-void SortNumberRoute( void )
-{
+void SortNumberRoute( void ) {
   int i, j; //Setting the counters
   ITEM Temp;
 
-  for (j = Number - 1; j > 0; j --)
-    for (i = 0; i < j; i ++)
-      if ((Bus[i].numberroute > Bus[i + 1].numberroute) > 0)
-      {
-        Temp = Bus[i].numberroute;
-        Bus[i].numberroute = Bus[i + 1].numberroute;
-        Bus[i + 1].numberroute = Temp;
+  for (j = Number - 1; j > 0; j --) {
+    for (i = 0; i < j; i ++) {
+      if ((Bus[i].numberroute > Bus[i + 1].numberroute) > 0) {
+        Temp = Bus[i];
+        Bus[i] = Bus[i + 1];
+        Bus[i + 1] = Temp;
       }
+    }
+  }
+  Print();
 } // End of 'SortNumberRoute' function
 
 // Function for ordering an array by number route
-void SortNumberRouteUbyvanie( void )
-{
+void SortNumberRouteUbyvanie( void ) {
   int i, j; //Setting the counters
   ITEM Temp;
 
-  for (j = Number - 1; j > 0; j --)
-    for (i = 0; i < j; i ++)
-      if ((Bus[i].numberroute < Bus[i + 1].numberroute) > 0)
-      {
-        Temp = Bus[i].numberroute;
-        Bus[i].numberroute = Bus[i + 1].numberroute;
-        Bus[i + 1].numberroute = Temp;
+  for (j = Number - 1; j > 0; j --) {
+    for (i = 0; i < j; i ++) {
+      if ((Bus[i].numberroute < Bus[i + 1].numberroute) > 0) {
+        Temp = Bus[i];
+        Bus[i] = Bus[i + 1];
+        Bus[i + 1] = Temp;
       }
+    }
+  }
+  Print();
 } // End of 'SortNumberRouteUbyvanie' function
 
 // Function for ordering an array by bus fleet number
-void SortBusFleetNumber( void )
-{
+void SortBusFleetNumber( void ) {
   int i, j; //Setting the counters
   ITEM Temp;
 
-  for (j = Number - 1; j > 0; j --)
-    for (i = 0; i < j; i ++)
-      if ((Bus[i].busfleetnumber > Bus[i + 1].busfleetnumber) > 0)
-      {
-        Temp = Bus[i].busfleetnumber;
-        Bus[i].busfleetnumber = Bus[i + 1].busfleetnumber;
-        Bus[i + 1].busfleetnumber = Temp;
+  for (j = Number - 1; j > 0; j --) {
+    for (i = 0; i < j; i ++) {
+      if (Bus[i].busfleetnumber > Bus[i + 1].busfleetnumber > 0) {
+        Temp = Bus[i];
+        Bus[i] = Bus[i + 1];
+        Bus[i + 1] = Temp;
       }
+    }
+  }
+  Print();
 } // End of 'SortBusFleetNumber' function
 
 // Function for ordering an array by bus fleet number
-void SortBusFleetNumberUbyvanie( void )
-{
+void SortBusFleetNumberUbyvanie( void ) {
   int i, j; //Setting the counters
   ITEM Temp;
 
-  for (j = Number - 1; j > 0; j --)
-    for (i = 0; i < j; i ++)
-      if ((Bus[i].busfleetnumber < Bus[i + 1].busfleetnumber) > 0)
-      {
-        Temp = Bus[i].busfleetnumber;
-        Bus[i].busfleetnumber = Bus[i + 1].busfleetnumber;
-        Bus[i + 1].busfleetnumber = Temp;
+  for (j = Number - 1; j > 0; j --) {
+    for (i = 0; i < j; i ++) {
+      if (Bus[i].busfleetnumber < Bus[i + 1].busfleetnumber > 0) {
+        Temp = Bus[i];
+        Bus[i] = Bus[i + 1];
+        Bus[i + 1] = Temp;
       }
+    }
+  }
+  Print();
 } // End of 'SortBusFleetNumberUbyvanie' function
 
 // Function for ordering an array by start time
-void SortStartTime( void )
-{
+void SortStartTime( void ) {
   int i, j; //Setting the counters
   ITEM Temp;
 
-  for (j = Number - 1; j > 0; j --)
-    for (i = 0; i < j; i ++)
-      if ((Bus[i].starttime > Bus[i + 1].starttime) > 0)
-      {
-        Temp = Bus[i].starttime;
-        Bus[i].starttime = Bus[i + 1].starttime;
-        Bus[i + 1].starttime = Temp;
+  for (j = Number - 1; j > 0; j --) {
+    for (i = 0; i < j; i ++) {
+      if ((Bus[i].starttimech > Bus[i + 1].starttimech) > 0) {
+        Temp = Bus[i];
+        Bus[i] = Bus[i + 1];
+        Bus[i + 1] = Temp;
       }
+    }
+  }
+  Print();
 } // End of 'SortStartTime' function
 
 // Function for ordering an array by start time
-void SortStartTimeUbyvanie( void )
-{
+void SortStartTimeUbyvanie( void ) {
   int i, j; //Setting the counters
   ITEM Temp;
 
-  for (j = Number - 1; j > 0; j --)
-    for (i = 0; i < j; i ++)
-      if ((Bus[i].starttime < Bus[i + 1].starttime) > 0)
-      {
-        Temp = Bus[i].starttime;
-        Bus[i].starttime = Bus[i + 1].starttime;
-        Bus[i + 1].starttime = Temp;
+  for (j = Number - 1; j > 0; j --) {
+    for (i = 0; i < j; i ++) {
+      if ((Bus[i].starttimech < Bus[i + 1].starttimech) > 0) {
+        Temp = Bus[i];
+        Bus[i] = Bus[i + 1];
+        Bus[i + 1] = Temp;
       }
+    }
+  }
+  Print();
 } // End of 'SortStartTimeUbyvanie' function
 
 // Function for ordering an array by end time
-void SortEndTime( void )
-{
+void SortEndTime( void ) {
   int i, j; //Setting the counters
   ITEM Temp;
 
-  for (j = Number - 1; j > 0; j --)
-    for (i = 0; i < j; i ++)
-      if ((Bus[i].endtime > Bus[i + 1].endtime) > 0)
-      {
-        Temp = Bus[i].endtime;
-        Bus[i].endtime = Bus[i + 1].endtime;
-        Bus[i + 1].endtime = Temp;
+  for (j = Number - 1; j > 0; j --) {
+    for (i = 0; i < j; i ++) {
+      if ((Bus[i].endtimech > Bus[i + 1].endtimech) > 0) {
+        Temp = Bus[i];
+        Bus[i] = Bus[i + 1];
+        Bus[i + 1] = Temp;
       }
+    }
+  }
+  Print();
 } // End of 'SortEndTime' function
 
 // Function for ordering an array by end time
-void SortEndTimeUbyvanie( void )
-{
+void SortEndTimeUbyvanie( void ) {
   int i, j; //Setting the counters
   ITEM Temp;
 
-  for (j = Number - 1; j > 0; j --)
-    for (i = 0; i < j; i ++)
-      if ((Bus[i].endtime < Bus[i + 1].endtime) > 0)
-      {
-        Temp = Bus[i].endtime;
-        Bus[i].endtime = Bus[i + 1].endtime;
-        Bus[i + 1].endtime = Temp;
+  for (j = Number - 1; j > 0; j --) {
+    for (i = 0; i < j; i ++) {
+      if ((Bus[i].endtimech < Bus[i + 1].endtimech) > 0) {
+        Temp = Bus[i];
+        Bus[i] = Bus[i + 1];
+        Bus[i + 1] = Temp;
       }
+    }
+  }
+  Print();
 } // End of 'SortEndTimeUbyvanie' function
 
 // Function for ordering an array by route in KM
-void SortRouteKM( void )
-{
+void SortRouteKM( void ) {
   int i, j; //Setting the counters
   ITEM Temp;
 
-  for (j = Number - 1; j > 0; j --)
-    for (i = 0; i < j; i ++)
-      if ((Bus[i].routekm > Bus[i + 1].routekm) > 0)
-      {
-        Temp = Bus[i].routekm;
-        Bus[i].routekm = Bus[i + 1].routekm;
-        Bus[i + 1].routekm = Temp;
+  for (j = Number - 1; j > 0; j --) {
+    for (i = 0; i < j; i ++) {
+      if ((Bus[i].routekm > Bus[i + 1].routekm) > 0) {
+        Temp = Bus[i];
+        Bus[i] = Bus[i + 1];
+        Bus[i + 1] = Temp;
       }
+    }
+  }
+  Print();
 } // End of 'SortRouteKM' function
 
 // Function for ordering an array by route in KM
-void SortRouteKMUbyvanie( void )
-{
+void SortRouteKMUbyvanie( void ) {
   int i, j; //Setting the counters
   ITEM Temp;
 
-  for (j = Number - 1; j > 0; j --)
-    for (i = 0; i < j; i ++)
-      if ((Bus[i].routekm < Bus[i + 1].routekm) > 0)
-      {
-        Temp = Bus[i].routekm;
-        Bus[i].routekm = Bus[i + 1].routekm;
-        Bus[i + 1].routekm = Temp;
+  for (j = Number - 1; j > 0; j --) {
+    for (i = 0; i < j; i ++) {
+      if ((Bus[i].routekm < Bus[i + 1].routekm) > 0) {
+        Temp = Bus[i];
+        Bus[i] = Bus[i + 1];
+        Bus[i + 1] = Temp;
       }
+    }
+  }
+  Print();
 } // End of 'SortRouteKMUbyvanie' function
 
 // Function for reading an array from a file
@@ -408,8 +455,9 @@ void Load( void )
 
   fscanf(F, "%i", &Number);
   for (i = 0; i < Number; i++)
-    fscanf(F, "%s\n%s\n%s\n%s\n%s\n", &Bus[i].numberroute, &Bus[i].busfleetnumber,
-    &Bus[i].starttime, &Bus[i].endtime, &Bus[i].routekm);
+    fscanf(F, "%i\n%i\n%02i:%02i\n%02i:%02\n%i\n", &Bus[i].numberroute, 
+    &Bus[i].busfleetnumber, &Bus[i].starttimech, &Bus[i].starttimem, 
+    &Bus[i].endtimech, &Bus[i].endtimem, &Bus[i].routekm);
 
   fclose(F);
 } // End of 'Load' function
@@ -428,15 +476,15 @@ void Save( void )
 
   fprintf(F, "%i\n", Number);
   for (i = 0; i < Number; i++)
-    fprintf(F, "%s\n%s\n%s\n%s\n%s\n", *Bus[i].numberroute, *Bus[i].busfleetnumber,
-    *Bus[i].starttime, *Bus[i].endtime, *Bus[i].routekm);
-
+    fprintf(F, "%i\n%i\n%02i:%02i\n%02i:%02\n%i\n", Bus[i].numberroute,
+    Bus[i].busfleetnumber, Bus[i].starttimech, Bus[i].starttimech,
+    Bus[i].endtimech, Bus[i].endtimem, Bus[i].routekm);
+//Убрала звездочки
   fclose(F);
 } // End of 'Save' function
 
 // Display the menu and read the number of the selected item
-int Menu( void )
-{
+int Menu( void ) {
   char c, k = 0;
   int i = 0; //Setting the counter
   c = 0;
@@ -473,8 +521,8 @@ int Menu( void )
 } /* End of 'Menu' function */
 
 int MenuSortChoice (void) {
-    char c = 0, k = 0;
-    while ((c < 49 || c > 50) && c != 27) {
+    char p = 0, k = 0;
+    while ((p < 49 || p > 50) && p != 27) {
         printf ("╔══════════════════════════════════╗\n");
         printf ("║      Select the sort type:       ║\n");
         printf ("╠════════════════╦╦════════════════╣\n");
@@ -482,14 +530,14 @@ int MenuSortChoice (void) {
         printf ("╚════════════════╩╩════════════════╝\n");
         k = getchar();
         while (k != '\n') {
-          c = k;
+          p = k;
           putchar (k);
           k = getchar();
         }
         putchar ('\n');
         fflush(stdin);
     }
-    return c;
+    return p;
 }
 
 int MenuSort( void )
@@ -565,7 +613,6 @@ void main( void )
  while ((Selection = Menu()) != 48 && Selection != 27)
     switch (Selection) {
         case 49:
-          Print();
           Add();
           break;
         case 50:
@@ -581,16 +628,14 @@ void main( void )
           break;
         case 53:
           MenuSortChoice();
-          Print();
           break;
         case 54:
           Del();
-          Print();
           break;
-        case 55:
-          Change();
-          Print();
-          break;
+        //case 55:
+        //  Change();
+        //  Print();
+        //  break;
     }
 } // End the function of the main menu
 
@@ -621,23 +666,18 @@ void mainsort( void )
       break;
     case 50:
       SortNumberRoute();
-      Print();
       break;
     case 51:
       SortBusFleetNumber();
-      Print();
       break;
     case 52:
       SortStartTime();
-      Print();
       break;
     case 53:
       SortEndTime();
-      Print();
       break;
     case 54:
       SortRouteKM();
-      Print();
       break;
     }
 } //End sorting menu function
@@ -651,23 +691,18 @@ int mainsortD (void) {
           break;
         case 50:
           SortNumberRouteUbyvanie();
-          Print();
           break;
         case 51:
           SortBusFleetNumberUbyvanie();
-          Print();
           break;
         case 52:
           SortStartTimeUbyvanie();
-          Print();
           break;
         case 53:
           SortEndTimeUbyvanie();
-          Print();
           break;
         case 54:
           SortRouteKMUbyvanie();
-          Print();
           break;
     }
 }
