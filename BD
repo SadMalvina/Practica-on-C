@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <string.h>
+#include <ncurses.h>
 
 // Structure for storing information about a single bus
 typedef struct tagITEM { //Setting a structure with information about buses
@@ -38,82 +39,80 @@ char a;
 int i = 0, ch = 0, dh = 0; ////Setting the counter
   if (Number == 99)
   {
-    fprintf(stderr, "You can't add another element\n");
+    printw("You can't add another element\n");
     return;
   }
-  putchar ('\n');
-  printf ("╔══════════════════════════╗\n");
-  printf ("║Enter number route >      ║\n");
-  printf ("╚══════════════════════════╝\n");
+  printw ("╔══════════════════════════╗\n");
+  printw ("║Enter number route >      ║\n");
+  printw ("╚══════════════════════════╝\n");
   while (dh != 1) {
-    a = getchar();
+    a = getch();
     while (a != '\n') {
         if ((a > 57) || (a < 48)) {
           while ((a > 57) || (a < 48)) {
-            if (a != '\n') fprintf(stderr, "Only numbers\n");
-            a = getchar();
+            if (a != '\n') printw("Only numbers\n");
+            a = getch();
           }
         }
         a = a - 48;
         ch = ch * 10 + a;
-        putchar(a);
         dh = 1;
-        a = getchar();
+        a = getch();
         if (ch > 9999) {
-          fprintf (stderr, "Overflow\n");
+          printw ("Overflow\n");
           dh = 0;
           ch = 0;
-          fflush(stdin);
+          //fflush(stdin);
         }
     }
   }
   Bus[Number].numberroute = ch;
-  putchar ('\n');
-  fflush(stdin);
+  //putchar ('\n');
+  //fflush(stdin);
   dh = 0;
-  printf ("╔══════════════════════════╗\n");
-  printf ("║Enter bus fleet number >  ║\n");
-  printf ("╚══════════════════════════╝\n");
+  printw ("╔══════════════════════════╗\n");
+  printw ("║Enter bus fleet number >  ║\n");
+  printw ("╚══════════════════════════╝\n");
   while (dh != 1) {
-    a = getchar();
+    a = getch();
     while (a != '\n') {
         if ((a > 57) || (a < 48)) {
           while ((a > 57) || (a < 48)) {
-            if (a != '\n') fprintf(stderr, "Only numbers\n");
-            a = getchar();
+            if (a != '\n') printw("Only numbers\n");
+            a = getch();
           }
         }
         a = a - 48;
         ch = ch * 10 + a;
-        putchar(a);
-        a = getchar();
+       // putchar(a);
+        a = getch();
         dh = 1;
-        if (ch > 9999999999999) {
-          fprintf (stderr, "Overflow\n");
+        if (ch > 99999) {
+          printw ("Overflow\n");
           dh = 0;
           ch = 0;
         }
     }
   }
   Bus[Number].busfleetnumber = ch;
-  putchar ('\n');
+  //putchar ('\n');
   ch = 0;
   dh = 0;
-  printf ("╔══════════════════════════╗\n");
-  printf ("║Enter start time >        ║\n");
-  printf ("╚══════════════════════════╝\n");
+  printw ("╔══════════════════════════╗\n");
+  printw ("║Enter start time >        ║\n");
+  printw ("╚══════════════════════════╝\n");
   while (dh != 1) {
-  a = getchar();
+  a = getch();
     while (a != '\n') {
         if ((a > 57) || (a < 48)) {
           while ((a > 57) || (a < 48)) {
-            if (a != '\n') fprintf(stderr, "Only numbers\n");
-            a = getchar();
+            if (a != '\n') printw("Only numbers\n");
+            a = getch();
           }
         }
         a = a - 48;
         ch = ch * 10 + a;
-        putchar(a);
+       // putchar(a);
         dh = 1;
         //if ((a > 57-48) || (a < 48-48)) {
         //    fprintf(stderr, "Only numbers.\n");
@@ -126,138 +125,138 @@ int i = 0, ch = 0, dh = 0; ////Setting the counter
         //    //putchar(a);
         //    }
         //}
-        a = getchar();
+        a = getch();
         if (ch > 23) {
-            fprintf(stderr, "The clock (hours) cannot be more than 23.\n");
+            printw("The clock (hours) cannot be more than 23.\n");
             dh = 0;
             ch = 0;
         } else if (ch < 0) {
-          fprintf(stderr, "Hours (hours) cannot be less than 00.\n");
+          printw("Hours (hours) cannot be less than 00.\n");
             dh = 0;
             ch = 0;
         }
     }
   }
     Bus[Number].starttimech = ch;
-    putchar('\n');
+   // putchar('\n');
     dh = 0;
     ch = 0;
   while (dh != 1) {
-    a = getchar();
+    a = getch();
     while (a != '\n') {
         if ((a > 57) || (a < 48)) {
           while ((a > 57) || (a < 48)) {
-            if (a != '\n') fprintf(stderr, "Only numbers\n");
-            a = getchar();
+            if (a != '\n') printw("Only numbers\n");
+            a = getch();
           }
         }
         a = a - 48;
         ch = ch * 10 + a;
-        putchar(a);
-        a = getchar();
+        //putchar(a);
+        a = getch();
         dh = 1;
         if (ch > 59) {
-          printf ("The clock (minutes) cannot be more than 59.\n");
+          printw ("The clock (minutes) cannot be more than 59.\n");
           dh = 0;
           ch = 0;
         }
         if (ch < 0) {
-          printf ("Hours (minutes) cannot be less than 00.\n");
+          printw ("Hours (minutes) cannot be less than 00.\n");
           dh = 0;
           ch = 0;
         }
     }
   }
     Bus[Number].starttimem = ch;
-    putchar('\n');
+    //putchar('\n');
   ch = 0;
   dh = 0;
-    printf ("╔══════════════════════════╗\n");
-    printf ("║Enter end time >          ║\n");
-    printf ("╚══════════════════════════╝\n");
+    printw ("╔══════════════════════════╗\n");
+    printw ("║Enter end time >          ║\n");
+    printw ("╚══════════════════════════╝\n");
   while (dh != 1) {
-    a = getchar();
+    a = getch();
     while (a != '\n') {
         if ((a > 57) || (a < 48)) {
           while ((a > 57) || (a < 48)) {
-            if (a != '\n') fprintf(stderr, "Only numbers\n");
-            a = getchar();
+            if (a != '\n') printw("Only numbers\n");
+            a = getch();
           }
         }
         a = a - 48;
         ch = ch * 10 + a;
-        putchar(a);
+        //putchar(a);
         dh = 1;
-        a = getchar();
+        a = getch();
         if (ch > 23) {
-            fprintf(stderr, "The clock (hours) cannot be more than 23.\n");
+            printw("The clock (hours) cannot be more than 23.\n");
             dh = 0;
             ch = 0;
         } else if (ch < 0) {
-            fprintf(stderr, "Hours (hours) cannot be less than 00.\n");
+            printw("Hours (hours) cannot be less than 00.\n");
             dh = 0;
             ch = 0;
         }
         if (ch == Bus[Number].starttimech) {
-            fprintf(stderr, "The interval between departure and arrival hoursis at least an hour!\n");
+            printw("The interval between departure and arrival hoursis at least an hour!\n");
             dh = 0;
             ch = 0;
         }
     }
   }
     Bus[Number].endtimech = ch;
-    putchar('\n');
+    //putchar('\n');
     dh = 0;
     ch = 0;
   while (dh != 1) {
-    a = getchar();
+    a = getch();
     while (a != '\n') {
         if ((a > 57) || (a < 48)) {
           while ((a > 57) || (a < 48)) {
-            if (a != '\n') fprintf(stderr, "Only numbers\n");
-            a = getchar();
+            if (a != '\n') printw("Only numbers\n");
+            a = getch();
           }
         }
         a = a - 48;
         ch = ch * 10 + a;
-        putchar(a);
-        a = getchar();
+        //putchar(a);
+        a = getch();
         dh = 1;
         if (ch > 59) {
-          printf ("The clock (minutes) cannot be more than 59.\n");
+          printw ("The clock (minutes) cannot be more than 59.\n");
           dh = 0;
           ch = 0;
         }
         if (ch < 0) {
-          printf ("Hours (minutes) cannot be less than 00.\n");
+          printw ("Hours (minutes) cannot be less than 00.\n");
           dh = 0;
           ch = 0;
         }
     }
   }
     Bus[Number].endtimem = ch;
-    putchar('\n');
+    //putchar('\n');
     dh = 0;
     ch = 0;
-  printf ("╔══════════════════════════╗\n");
-  printf ("║Enter route in m >        ║\n");
-  printf ("╚══════════════════════════╝\n");
+  printw ("╔══════════════════════════╗\n");
+  printw ("║Enter route in m >        ║\n");
+  printw ("╚══════════════════════════╝\n");
   while (dh != 1) {
-    a = getchar();
+    a = getch();
     while (a != '\n') {
       if ((a > 57) || (a < 48)) {
           while ((a > 57) || (a < 48)) {
-            if (a != '\n') fprintf(stderr, "Only numbers\n");
-            a = getchar();
+            if (a != '\n') printw("Only numbers\n");
+            a = getch();
           }
       }
       a = a - 48;
       ch = ch * 10 + a;
-      putchar(a);
-      a = getchar();
+      //putchar(a);
+      a = getch();
       dh = 1;
         if (ch > 999999) {
-          fprintf (stderr, "Overflow\n");
+          printw ("Overflow\n");
           dh = 0;
           ch = 0;
         }
@@ -278,13 +277,13 @@ void Del( void )
   char d, dt;
 
   Print();
-  printf("Enter the number of the item to delete > ");
-  i = getchar();
+  printw("Enter the number of the item to delete > ");
+  i = getch();
       i = i - 48;
-      putchar(d);
+      //putchar(d);
   if (i < 0 || i > Number)
   {
-    fprintf(stderr, "The element with the number %i does not exist\n", i);
+    printw("The element with the number %i does not exist\n", i);
     return;
   }
 
@@ -300,37 +299,37 @@ void Change (void) {
     char a, ch;
     int tapok = 0, Num = 0; //Setting the counters
     Print();
-    printf ("╔════════════════════════════════════════════════════════════╗\n");
-    printf ("║                                                            ║\n");
-    printf ("║    Enter the line number where you want to make changes    ║\n");
-    printf ("║                                                            ║\n");
-    printf ("╚════════════════════════════════════════════════════════════╝\n");
-    a = getchar();
+    printw ("╔════════════════════════════════════════════════════════════╗\n");
+    printw ("║                                                            ║\n");
+    printw ("║    Enter the line number where you want to make changes    ║\n");
+    printw ("║                                                            ║\n");
+    printw ("╚════════════════════════════════════════════════════════════╝\n");
+    a = getch();
     while (a != '\n') {
       a = a - 48;
       Num = Num * 10 + a;
-      putchar (a);
-      a = getchar();
+      //putchar (a);
+      a = getch();
     }
-    putchar ('\n');
+    //putchar ('\n');
     while ((a < 49 || a > 53) && a != 27) {
-        printf ("╔════════════════════════════════════════════════════════════╗\n");
-        printf ("║                                                            ║\n");
-        printf ("║         Enter the desired character to change:             ║\n");
-        printf ("║                                                            ║\n");
-        printf ("╠════════════════════════════════════════════════════════════╣\n");
-        printf ("║                                                            ║\n");
-        printf ("║                 1 > Number Route                           ║\n");
-        printf ("║                 2 > Bus Fleet Number                       ║\n");
-        printf ("║                 3 > Start Time                             ║\n");
-        printf ("║                 4 > End Time                               ║\n");
-        printf ("║                 5 > Route in KM                            ║\n");
-        printf ("║                                                            ║\n");
-        printf ("╚════════════════════════════════════════════════════════════╝\n");
-        a = getchar();
+        printw ("╔════════════════════════════════════════════════════════════╗\n");
+        printw ("║                                                            ║\n");
+        printw ("║         Enter the desired character to change:             ║\n");
+        printw ("║                                                            ║\n");
+        printw ("╠════════════════════════════════════════════════════════════╣\n");
+        printw ("║                                                            ║\n");
+        printw ("║                 1 > Number Route                           ║\n");
+        printw ("║                 2 > Bus Fleet Number                       ║\n");
+        printw ("║                 3 > Start Time                             ║\n");
+        printw ("║                 4 > End Time                               ║\n");
+        printw ("║                 5 > Route in KM                            ║\n");
+        printw ("║                                                            ║\n");
+        printw ("╚════════════════════════════════════════════════════════════╝\n");
+        a = getch();
         tapok = a;
-          putchar (a);
-    putchar ('\n');
+          //putchar (a);
+    //putchar ('\n');
     }
     switch (tapok) {
         case 49:
@@ -338,74 +337,74 @@ void Change (void) {
         while (a != '\n') {
           a = a - 48;
           ch = ch * 10 + a;
-          putchar(a);
-          a = getchar();
+          //putchar(a);
+          a = getch();
         }
         Bus[Num].numberroute = ch;
-        putchar ('\n');
+        //putchar ('\n');
         break;
         case 50:
-        a = getchar();
+        a = getch();
         while (a != '\n') {
           a = a - 48;
           ch = ch * 10 + a;
-          putchar(a);
-          a = getchar();
+          //putchar(a);
+          a = getch();
         }
         Bus[Num].busfleetnumber = ch;
-        putchar ('\n');
+        //putchar ('\n');
         break;
         case 51:
-        a = getchar();
+        a = getch();
         while (a != '\n') {
           a = a - 48;
           ch = ch * 10 + a;
-          putchar(a);
-          a = getchar();
+          //putchar(a);
+          a = getch();
         }
         Bus[Num].starttimech = ch;
-        putchar ('\n');
+        //putchar ('\n');
         ch = 0;
-        a = getchar();
+        a = getch();
         while (a != '\n') {
           a = a - 48;
           ch = ch * 10 + a;
-          putchar(a);
-          a = getchar();
+          //putchar(a);
+          a = getch();
         }
         Bus[Num].starttimem = ch;
-        putchar ('\n');
+        //putchar ('\n');
         break;
         case 52:
-        a = getchar();
+        a = getch();
         while (a != '\n') {
           a = a - 48;
           ch = ch * 10 + a;
-          putchar(a);
-          a = getchar();
+          //putchar(a);
+          a = getch();
         }
         Bus[Num].endtimech = ch;
         ch = 0;
-        a = getchar();
+        a = getch();
         while (a != '\n') {
           a = a - 48;
           ch = ch * 10 + a;
-          putchar(a);
-          a = getchar();
+          //putchar(a);
+          a = getch();
         }
         Bus[Num].endtimem = ch;
-        putchar ('\n');
+        //putchar ('\n');
         break;
         case 53:
-        a = getchar();
+        a = getch();
         while (a != '\n') {
           a = a - 48;
           ch = ch * 10 + a;
-          putchar(a);
-          a = getchar();
+          //putchar(a);
+          a = getch();
         }
         Bus[Num].routekm = ch;
-        putchar ('\n');
+        //putchar ('\n');
         break;
     }
     Print();
@@ -582,86 +581,179 @@ void SortRouteKMUbyvanie( void ) {
 } // End of 'SortRouteKMUbyvanie' function
 
 // Function for reading an array from a file
-void Load( void )
-{
-  FILE *F;
-  int i; //Setting the counter
+//void Load( void )
+//{
+//  FILE *F;
+//  int i; //Setting the counter
 
-  if ((F = fopen("task1.dat", "rt")) == NULL)
-  {
-    fprintf(stderr, "The file cannot be opened for reading 'task1.dta'\n");
-    return;
-  }
+//  if ((F = fopen("task1.dat", "rt")) == NULL)
+//  {
+//    fprintf(stderr, "The file cannot be opened for reading 'task1.dta'\n");
+//    return;
+//  }
 
-  fscanf(F, "%i", &Number);
-  for (i = 0; i < Number; i++)
-    fscanf(F, "%i\n%i\n%02i:%02i\n%02i:%02\n%i\n", &Bus[i].numberroute, 
-    &Bus[i].busfleetnumber, &Bus[i].starttimech, &Bus[i].starttimem, 
-    &Bus[i].endtimech, &Bus[i].endtimem, &Bus[i].routekm);
+//  fscanf(F, "%i", &Number);
+//  for (i = 0; i < Number; i++)
+//    fscanf(F, "%i\n%i\n%02i:%02i\n%02i:%02\n%i\n", &Bus[i].numberroute, 
+//    &Bus[i].busfleetnumber, &Bus[i].starttimech, &Bus[i].starttimem, 
+//    &Bus[i].endtimech, &Bus[i].endtimem, &Bus[i].routekm);
 
-  fclose(F);
-} // End of 'Load' function
+//  fclose(F);
+//} // End of 'Load' function
 
 // Function for saving an array in a file
-void Save( void )
-{
-  FILE *F;
-  int i; //Setting the counter
+//void Save( void )
+//{
+//  FILE *F;
+//  int i; //Setting the counter
 
-  if ((F = fopen("task1.dat", "wt")) == NULL)
-  {
-    fprintf(stderr, "The file cannot be opened for writing 'task1.dta'\n");
-    return;
-  }
+//  if ((F = fopen("task1.dat", "wt")) == NULL)
+//  {
+//    fprintf(stderr, "The file cannot be opened for writing 'task1.dta'\n");
+//    return;
+// }
 
-  fprintf(F, "%i\n", Number);
-  for (i = 0; i < Number; i++)
-    fprintf(F, "%i\n%i\n%02i:%02i\n%02i:%02\n%i\n", Bus[i].numberroute,
-    Bus[i].busfleetnumber, Bus[i].starttimech, Bus[i].starttimech,
-    Bus[i].endtimech, Bus[i].endtimem, Bus[i].routekm);
+//  fprintf(F, "%i\n", Number);
+//  for (i = 0; i < Number; i++)
+ //   fprintf(F, "%i\n%i\n%02i:%02i\n%02i:%02\n%i\n", Bus[i].numberroute,
+//    Bus[i].busfleetnumber, Bus[i].starttimech, Bus[i].starttimech,
+//    Bus[i].endtimech, Bus[i].endtimem, Bus[i].routekm);
 //Убрала звездочки
-  fclose(F);
-} // End of 'Save' function
+//  fclose(F);
+//} // End of 'Save' function
 
 // Display the menu and read the number of the selected item
 int Menu( void ) {
-  char c, k = 0;
-  int i = 0; //Setting the counter
+  int c, k = 0;
+  int i = 0, Curr = 0; //Setting the counter
   c = 0;
-  while ((c < 48 || c > 55) && c != 27)
-  {
-    printf("╒══════════════════════╕\n"
-           "│    0 : Exit          │\n"
-           "╞══════════════════════╡\n"
-           "│    1 : Add           │\n"
-           "╞══════════════════════╡\n"
-           "│    2 : Save in file  │\n"
-           "╞══════════════════════╡\n"
-           "│    3 : Download      │\n"
-           "╞══════════════════════╡\n"
-           "│    4 : Print         │\n"
-           "╞══════════════════════╡\n"
-           "│    5 : Sort          │\n"
-           "╞══════════════════════╡\n"
-           "│    6 : Delete        │\n"
-           "╞══════════════════════╡\n"
-           "│    7 : Change        │\n"
-           "╘══════════════════════╛\n");
-    k = getchar();
-    while (k != '\n') {
-      c = k;
-      putchar (k);
-      k = getchar();
-    }
-    putchar ('\n');
-    fflush(stdin);
-    //printf("%c\n", c);
-  }
-  return c;
+  keypad (stdscr, TRUE);
+ // while ((c < 48 || c > 55) && c != 27) {
+ //   printf("╒══════════════════════╕\n"
+ //          "│    0 : Exit          │\n"
+ //          "╞══════════════════════╡\n"
+ //          "│    1 : Add           │\n"
+ //          "╞══════════════════════╡\n"
+ //          "│    2 : Save in file  │\n"
+ //          "╞══════════════════════╡\n"
+ //          "│    3 : Download      │\n"
+ //          "╞══════════════════════╡\n"
+ //          "│    4 : Print         │\n"
+ //          "╞══════════════════════╡\n"
+ //          "│    5 : Sort          │\n"
+ //          "╞══════════════════════╡\n"
+ //          "│    6 : Delete        │\n"
+ //          "╞══════════════════════╡\n"
+ //          "│    7 : Change        │\n"
+ //          "╘══════════════════════╛\n");
+    do {
+	    if (Curr == 0) {
+              printw (
+              "╒═════════════════════════════╕\n"
+              "│    0 : Exit          <<<    │\n"
+              "╞═════════════════════════════╡\n");
+            } else {
+              printw (
+              "╒═════════════════════════════╕\n"
+              "│    0 : Exit                 │\n"
+              "╞═════════════════════════════╡\n");
+	    }
+	    if (Curr == 1) {
+              printw (
+              "│    1 : Add           <<<    │\n"
+              "╞═════════════════════════════╡\n");
+            } else {
+              printw (
+              "│    1 : Add                  │\n"
+              "╞═════════════════════════════╡\n");
+            }
+	    if (Curr == 2) {
+              printw (
+              "│    2 : Save in file  <<<    │\n"
+              "╞═════════════════════════════╡\n");
+            } else {
+              printw (
+              "│    2 : Save in file         │\n"
+              "╞═════════════════════════════╡\n");
+            }
+            if (Curr == 3) {
+              printw (
+              "│    3 : Download      <<<    │\n"
+              "╞═════════════════════════════╡\n");
+            } else {
+              printw (
+              "│    3 : Download             │\n"
+              "╞═════════════════════════════╡\n");
+            }
+	    if (Curr == 4) {
+              printw (
+              "│    4 : Save in file  <<<    │\n"
+              "╞═════════════════════════════╡\n");
+            } else {
+              printw (
+              "│    4 : Save in file         │\n"
+              "╞═════════════════════════════╡\n");
+            }
+	    if (Curr == 5) {
+              printw (
+              "│    5 : Sort          <<<    │\n"
+              "╞═════════════════════════════╡\n");
+            } else {
+              printw (
+              "│    5 : Sort                 │\n"
+              "╞═════════════════════════════╡\n");
+            }
+	    if (Curr == 6) {
+              printw (
+              "│    6 : Delete        <<<    │\n"
+              "╞═════════════════════════════╡\n");
+            } else {
+              printw (
+              "│    6 : Delete               │\n"
+              "╞═════════════════════════════╡\n");
+            }
+	    if (Curr == 7) {
+              printw (
+              "│    7 : Change        <<<    │\n"
+              "╞═════════════════════════════╡\n");
+            } else {
+              printw (
+              "│    7 : Change               │\n"
+              "╞═════════════════════════════╡\n");
+            }
+	    printw("\n");
+    k = getch();
+    //switch (k) {
+    //	    case KEY_DOWN: {
+    // 	    if (Curr == 6) Curr = 0;
+    // 	    else Curr++;
+    //        }
+    //        clear();
+    // 	    break;
+    //	    case KEY_UP: {
+    //	    if (Curr == 0) Curr = 6;
+    //	    else Curr--;
+    //        }
+    //        clear();
+    //	    break;
+    //}
+    if (k == KEY_DOWN) {
+	    if (Curr == 6) Curr = 0;
+            else Curr++;
+            }
+            clear();
+    if (k == KEY_UP) {
+	    if (Curr == 0) Curr = 8;
+            else Curr--;
+            }
+            clear();
+
+    } while (k != 10);
+    return Curr;
 } /* End of 'Menu' function */
 
 int MenuSortChoice (void) {
-    char p = 0, k = 0;
+    int p = 0, k = 0;
     while ((p < 49 || p > 50) && p != 27) {
         printf ("╔══════════════════════════════════╗\n");
         printf ("║      Select the sort type:       ║\n");
@@ -669,13 +761,21 @@ int MenuSortChoice (void) {
         printf ("║  1 - Decrease  ║║  2 - Increase  ║\n");
         printf ("╚════════════════╩╩════════════════╝\n");
         k = getchar();
+	switch (k) {
+		case KEY_LEFT:
+			p = 1;
+			break;
+		case KEY_RIGHT:
+			p = 2;
+			break;
+	}
         //while (k != '\n') {
-          p = k;
+        //  p = k;
         //  putchar (k);
         //  k = getchar();
         //}
         //putchar ('\n');
-        fflush(stdin);
+        //fflush(stdin);
     }
     return p;
 }
@@ -687,7 +787,7 @@ int MenuSort( void )
 
   while ((c < 49 || c > 54) && c != 27)
   {
-    printf("╒════════════════════════════╕\n"
+    printw("╒════════════════════════════╕\n"
            "│    1 : Return              │\n"
            "╞════════════════════════════╡\n"
            "│    2 : Number Route        │\n"
@@ -700,16 +800,16 @@ int MenuSort( void )
            "╞════════════════════════════╡\n"
            "│    6 : Route KM            │\n"
            "╘════════════════════════════╛\n");
-    k = getchar();
+    k = getch();
     //while (k != '\n') {
-      c = k;
-      putchar (k);
-    //  k = getchar();
+     // c = k;
+      //putchar (k);
+    //  k = getch();
     //}
-    putchar ('\n');
-    fflush(stdin);
+    //putchar ('\n');
+    //fflush(stdin);
   }
-  return c;
+  return k;
 } // End of 'MenuSort' function
 
 // Display the menu and read the number of the selected item sort
@@ -717,10 +817,11 @@ int MenuSortD( void )
 {
   char c, k = 0;
   c = 0;
+  int Curr = 0;
 
   while ((c < 49 || c > 54) && c != 27)
   {
-    printf("╒════════════════════════════╕\n"
+    printw("╒════════════════════════════╕\n"
            "│    1 : Return              │\n"
            "╞════════════════════════════╡\n"
            "│    2 : Number Route        │\n"
@@ -733,46 +834,46 @@ int MenuSortD( void )
            "╞════════════════════════════╡\n"
            "│    6 : Route KM            │\n"
            "╘════════════════════════════╛\n");
-    k = getchar();
+    k = getch();
     //while (k != '\n') {
-      c = k -48;
-      putchar (k);
+      //c = k -48;
+     // putchar (k);
     //  k = getchar();
     //}
-    putchar ('\n');
-    fflush(stdin);
+    //putchar ('\n');
+    //fflush(stdin);
   }
-  return c;
+  return k;
 } // End of 'MenuSortD' function
 
 // The function of the main menu
-void main( void )
+int main( void )
 {
   int Selection;
 
  while ((Selection = Menu()) != 48 && Selection != 27)
     switch (Selection) {
-        case 49:
+        case 1:
           Add();
           break;
-        case 50:
+        //case 2:
+        //  Print();
+        //  Save();
+        //  break;
+        //case 3:
+        //  Print();
+        //  Load();
+        //  break;
+        case 4:
           Print();
-          Save();
           break;
-        case 51:
-          Print();
-          Load();
-          break;
-        case 52:
-          Print();
-          break;
-        case 53:
+        case 5:
           MenuSortChoice();
           break;
-        case 54:
+        case 6:
           Del();
           break;
-        case 55:
+        case 7:
           Change();
           Print();
           break;
@@ -822,7 +923,7 @@ void mainsort( void )
     }
 } //End sorting menu function
 
-int mainsortD (void) {
+void mainsortD (void) {
     int Selection;
     while ((Selection = MenuSortD()) != 48 && Selection != 27)
     switch (Selection) {
