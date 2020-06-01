@@ -45,41 +45,60 @@ int i = 0, ch = 0, dh = 0; ////Setting the counter
   printf ("╔══════════════════════════╗\n");
   printf ("║Enter number route >      ║\n");
   printf ("╚══════════════════════════╝\n");
-  a = getchar();
-  while (a != '\n') {
-      if ((a > 57) || (a < 48)) {
+  while (dh != 1) {
+    a = getchar();
+    while (a != '\n') {
+        if ((a > 57) || (a < 48)) {
           while ((a > 57) || (a < 48)) {
             if (a != '\n') fprintf(stderr, "Only numbers\n");
             a = getchar();
           }
-      }
-      a = a - 48;
-      ch = ch * 10 + a;
-      putchar(a);
-      a = getchar();
+        }
+        a = a - 48;
+        ch = ch * 10 + a;
+        putchar(a);
+        dh = 1;
+        a = getchar();
+        if (ch > 9999) {
+          fprintf (stderr, "Overflow\n");
+          dh = 0;
+          ch = 0;
+          fflush(stdin);
+        }
+    }
   }
   Bus[Number].numberroute = ch;
   putchar ('\n');
-  ch = 0;
+  fflush(stdin);
+  dh = 0;
   printf ("╔══════════════════════════╗\n");
   printf ("║Enter bus fleet number >  ║\n");
   printf ("╚══════════════════════════╝\n");
-  a = getchar();
-  while (a != '\n') {
-      if ((a > 57) || (a < 48)) {
+  while (dh != 1) {
+    a = getchar();
+    while (a != '\n') {
+        if ((a > 57) || (a < 48)) {
           while ((a > 57) || (a < 48)) {
             if (a != '\n') fprintf(stderr, "Only numbers\n");
             a = getchar();
           }
-      }
-      a = a - 48;
-      ch = ch * 10 + a;
-      putchar(a);
-      a = getchar();
+        }
+        a = a - 48;
+        ch = ch * 10 + a;
+        putchar(a);
+        a = getchar();
+        dh = 1;
+        if (ch > 9999999999999) {
+          fprintf (stderr, "Overflow\n");
+          dh = 0;
+          ch = 0;
+        }
+    }
   }
   Bus[Number].busfleetnumber = ch;
   putchar ('\n');
   ch = 0;
+  dh = 0;
   printf ("╔══════════════════════════╗\n");
   printf ("║Enter start time >        ║\n");
   printf ("╚══════════════════════════╝\n");
@@ -218,12 +237,14 @@ int i = 0, ch = 0, dh = 0; ////Setting the counter
   }
     Bus[Number].endtimem = ch;
     putchar('\n');
+    dh = 0;
     ch = 0;
   printf ("╔══════════════════════════╗\n");
   printf ("║Enter route in m >        ║\n");
   printf ("╚══════════════════════════╝\n");
-  a = getchar();
-  while (a != '\n') {
+  while (dh != 1) {
+    a = getchar();
+    while (a != '\n') {
       if ((a > 57) || (a < 48)) {
           while ((a > 57) || (a < 48)) {
             if (a != '\n') fprintf(stderr, "Only numbers\n");
@@ -234,6 +255,13 @@ int i = 0, ch = 0, dh = 0; ////Setting the counter
       ch = ch * 10 + a;
       putchar(a);
       a = getchar();
+      dh = 1;
+        if (ch > 999999) {
+          fprintf (stderr, "Overflow\n");
+          dh = 0;
+          ch = 0;
+        }
+    }
   }
   ch = ch / 1000;
   Bus[Number].routekm = ch;
