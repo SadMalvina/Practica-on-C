@@ -35,7 +35,7 @@ void Print( void ) {
 // Function for adding an element
 void Add( void ) {
 char a;
-int i = 0, ch = 0, dh; ////Setting the counter
+int i = 0, ch = 0, dh = 0; ////Setting the counter
   if (Number == 99)
   {
     fprintf(stderr, "You can't add another element\n");
@@ -80,12 +80,12 @@ int i = 0, ch = 0, dh; ////Setting the counter
   Bus[Number].busfleetnumber = ch;
   putchar ('\n');
   ch = 0;
-  dh = 1;
   printf ("╔══════════════════════════╗\n");
   printf ("║Enter start time >        ║\n");
   printf ("╚══════════════════════════╝\n");
+  while (dh != 1) {
   a = getchar();
-    while ((a != '\n') || (dh == 3)) {
+    while (a != '\n') {
         if ((a > 57) || (a < 48)) {
           while ((a > 57) || (a < 48)) {
             if (a != '\n') fprintf(stderr, "Only numbers\n");
@@ -94,13 +94,36 @@ int i = 0, ch = 0, dh; ////Setting the counter
         }
         a = a - 48;
         ch = ch * 10 + a;
-        dh++;
         putchar(a);
+        dh = 1;
+        //if ((a > 57-48) || (a < 48-48)) {
+        //    fprintf(stderr, "Only numbers.\n");
+        //    dh = 0;
+        //    ch = 0;
+        //    while ((a > 57) || (a < 48)) {
+        //        //a = getchar();
+        //        fflush (stdin);
+        //        a = getchar();
+        //    //putchar(a);
+        //    }
+        //}
         a = getchar();
+        if (ch > 23) {
+            fprintf(stderr, "The clock (hours) cannot be more than 23.\n");
+            dh = 0;
+            ch = 0;
+        } else if (ch < 0) {
+          fprintf(stderr, "Hours (hours) cannot be less than 00.\n");
+            dh = 0;
+            ch = 0;
+        }
     }
+  }
     Bus[Number].starttimech = ch;
     putchar('\n');
+    dh = 0;
     ch = 0;
+  while (dh != 1) {
     a = getchar();
     while (a != '\n') {
         if ((a > 57) || (a < 48)) {
@@ -113,13 +136,27 @@ int i = 0, ch = 0, dh; ////Setting the counter
         ch = ch * 10 + a;
         putchar(a);
         a = getchar();
+        dh = 1;
+        if (ch > 59) {
+          printf ("The clock (minutes) cannot be more than 59.\n");
+          dh = 0;
+          ch = 0;
+        }
+        if (ch < 0) {
+          printf ("Hours (minutes) cannot be less than 00.\n");
+          dh = 0;
+          ch = 0;
+        }
     }
+  }
     Bus[Number].starttimem = ch;
     putchar('\n');
   ch = 0;
+  dh = 0;
     printf ("╔══════════════════════════╗\n");
     printf ("║Enter end time >          ║\n");
     printf ("╚══════════════════════════╝\n");
+  while (dh != 1) {
     a = getchar();
     while (a != '\n') {
         if ((a > 57) || (a < 48)) {
@@ -131,11 +168,29 @@ int i = 0, ch = 0, dh; ////Setting the counter
         a = a - 48;
         ch = ch * 10 + a;
         putchar(a);
+        dh = 1;
         a = getchar();
+        if (ch > 23) {
+            fprintf(stderr, "The clock (hours) cannot be more than 23.\n");
+            dh = 0;
+            ch = 0;
+        } else if (ch < 0) {
+            fprintf(stderr, "Hours (hours) cannot be less than 00.\n");
+            dh = 0;
+            ch = 0;
+        }
+        if (ch == Bus[Number].starttimech) {
+            fprintf(stderr, "The interval between departure and arrival hoursis at least an hour!\n");
+            dh = 0;
+            ch = 0;
+        }
     }
+  }
     Bus[Number].endtimech = ch;
     putchar('\n');
+    dh = 0;
     ch = 0;
+  while (dh != 1) {
     a = getchar();
     while (a != '\n') {
         if ((a > 57) || (a < 48)) {
@@ -148,7 +203,19 @@ int i = 0, ch = 0, dh; ////Setting the counter
         ch = ch * 10 + a;
         putchar(a);
         a = getchar();
+        dh = 1;
+        if (ch > 59) {
+          printf ("The clock (minutes) cannot be more than 59.\n");
+          dh = 0;
+          ch = 0;
+        }
+        if (ch < 0) {
+          printf ("Hours (minutes) cannot be less than 00.\n");
+          dh = 0;
+          ch = 0;
+        }
     }
+  }
     Bus[Number].endtimem = ch;
     putchar('\n');
     ch = 0;
