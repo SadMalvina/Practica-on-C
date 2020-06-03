@@ -1,4 +1,6 @@
 #include <ncurses.h>
+#include <stdio.h>
+#include <locale.h>
 
 // Structure for storing information about a single bus
 typedef struct tagITEM { //Setting a structure with information about buses
@@ -60,6 +62,8 @@ void Del( void ) {
     return;
   }
 
+  
+
   for (i--; i < Number - 1; i++)
     Bus[i] = Bus[i + 1];
 
@@ -75,8 +79,8 @@ void Add( void ) {
 char a;
 int i = 0, ch = 0, dh = 0; ////Setting the counter
 initscr();
-  noecho();
-  keypad(stdscr, false);
+  echo();
+  keypad(stdscr, true);
   if (Number == 99) {
     printw("You can't add another element\n");
     return;
@@ -93,6 +97,9 @@ initscr();
             a = getch();
           }
         }
+	//if (a == KEY_DOWN) {
+	//	a = ' ';
+        //} 
         a = a - 48;
         ch = ch * 10 + a;
         dh = 1;
@@ -101,10 +108,10 @@ initscr();
           printw ("Overflow\n");
           dh = 0;
           ch = 0;
-          //fflush(stdin);
         }
     }
   }
+  printw ("\n");
   Bus[Number].numberroute = ch;
   dh = 0;
   printw ("╔══════════════════════════╗\n");
@@ -296,92 +303,265 @@ initscr();
   endwin();
 } // End of 'Add' function
 
+// Function for ordering an array by number route
+void SortNumberRoute( void ) {
+  int i, j; //Setting the counters
+  ITEM Temp;
+
+  for (j = Number - 1; j > 0; j --) {
+    for (i = 0; i < j; i ++) {
+      if ((Bus[i].numberroute > Bus[i + 1].numberroute) > 0) {
+        Temp = Bus[i];
+        Bus[i] = Bus[i + 1];
+        Bus[i + 1] = Temp;
+      }
+    }
+  }
+  Print();
+} // End of 'SortNumberRoute' function
+
+// Function for ordering an array by number route
+void SortNumberRouteUbyvanie( void ) {
+  int i, j; //Setting the counters
+  ITEM Temp;
+
+  for (j = Number - 1; j > 0; j --) {
+    for (i = 0; i < j; i ++) {
+      if ((Bus[i].numberroute < Bus[i + 1].numberroute) > 0) {
+        Temp = Bus[i];
+        Bus[i] = Bus[i + 1];
+        Bus[i + 1] = Temp;
+      }
+    }
+  }
+  Print();
+} // End of 'SortNumberRouteUbyvanie' function
+
+// Function for ordering an array by bus fleet number
+void SortBusFleetNumber( void ) {
+  int i, j; //Setting the counters
+  ITEM Temp;
+
+  for (j = Number - 1; j > 0; j --) {
+    for (i = 0; i < j; i ++) {
+      if (Bus[i].busfleetnumber > Bus[i + 1].busfleetnumber > 0) {
+        Temp = Bus[i];
+        Bus[i] = Bus[i + 1];
+        Bus[i + 1] = Temp;
+      }
+    }
+  }
+  Print();
+} // End of 'SortBusFleetNumber' function
+
+// Function for ordering an array by bus fleet number
+void SortBusFleetNumberUbyvanie( void ) {
+  int i, j; //Setting the counters
+  ITEM Temp;
+
+  for (j = Number - 1; j > 0; j --) {
+    for (i = 0; i < j; i ++) {
+      if (Bus[i].busfleetnumber < Bus[i + 1].busfleetnumber > 0) {
+        Temp = Bus[i];
+        Bus[i] = Bus[i + 1];
+        Bus[i + 1] = Temp;
+      }
+    }
+  }
+  Print();
+} // End of 'SortBusFleetNumberUbyvanie' function
+
+// Function for ordering an array by start time
+void SortStartTime( void ) {
+  int i, j; //Setting the counters
+  ITEM Temp;
+
+  for (j = Number - 1; j > 0; j --) {
+    for (i = 0; i < j; i ++) {
+      if ((Bus[i].starttimech > Bus[i + 1].starttimech) > 0) {
+        Temp = Bus[i];
+        Bus[i] = Bus[i + 1];
+        Bus[i + 1] = Temp;
+      }
+    }
+  }
+  Print();
+} // End of 'SortStartTime' function
+
+// Function for ordering an array by start time
+void SortStartTimeUbyvanie( void ) {
+  int i, j; //Setting the counters
+  ITEM Temp;
+
+  for (j = Number - 1; j > 0; j --) {
+    for (i = 0; i < j; i ++) {
+      if ((Bus[i].starttimech < Bus[i + 1].starttimech) > 0) {
+        Temp = Bus[i];
+        Bus[i] = Bus[i + 1];
+        Bus[i + 1] = Temp;
+      }
+    }
+  }
+  Print();
+} // End of 'SortStartTimeUbyvanie' function
+
+// Function for ordering an array by end time
+void SortEndTime( void ) {
+  int i, j; //Setting the counters
+  ITEM Temp;
+
+  for (j = Number - 1; j > 0; j --) {
+    for (i = 0; i < j; i ++) {
+      if ((Bus[i].endtimech > Bus[i + 1].endtimech) > 0) {
+        Temp = Bus[i];
+        Bus[i] = Bus[i + 1];
+        Bus[i + 1] = Temp;
+      }
+    }
+  }
+  Print();
+} // End of 'SortEndTime' function
+
+// Function for ordering an array by end time
+void SortEndTimeUbyvanie( void ) {
+  int i, j; //Setting the counters
+  ITEM Temp;
+
+  for (j = Number - 1; j > 0; j --) {
+    for (i = 0; i < j; i ++) {
+      if ((Bus[i].endtimech < Bus[i + 1].endtimech) > 0) {
+        Temp = Bus[i];
+        Bus[i] = Bus[i + 1];
+        Bus[i + 1] = Temp;
+      }
+    }
+  }
+  Print();
+} // End of 'SortEndTimeUbyvanie' function
+
+// Function for ordering an array by route in KM
+void SortRouteKM( void ) {
+  int i, j; //Setting the counters
+  ITEM Temp;
+
+  for (j = Number - 1; j > 0; j --) {
+    for (i = 0; i < j; i ++) {
+      if ((Bus[i].routekm > Bus[i + 1].routekm) > 0) {
+        Temp = Bus[i];
+        Bus[i] = Bus[i + 1];
+        Bus[i + 1] = Temp;
+      }
+    }
+  }
+  Print();
+} // End of 'SortRouteKM' function
+
+// Function for ordering an array by route in KM
+void SortRouteKMUbyvanie( void ) {
+  int i, j; //Setting the counters
+  ITEM Temp;
+
+  for (j = Number - 1; j > 0; j --) {
+    for (i = 0; i < j; i ++) {
+      if ((Bus[i].routekm < Bus[i + 1].routekm) > 0) {
+        Temp = Bus[i];
+        Bus[i] = Bus[i + 1];
+        Bus[i + 1] = Temp;
+      }
+    }
+  }
+  Print();
+} // End of 'SortRouteKMUbyvanie' function
+
 int Menu() {
+
+  setlocale(LC_ALL, "");
+
   int c = 0, k = 0;
   int i = 0, Curr = 0;
   initscr();
   noecho();
   keypad(stdscr, true);
   do {
-	 if (Curr == 0) {
-         printw (
-         "#201#205#205#205#205#205#205#205#205#205#205#205#205#205#205#205#205#205#205#205#205#205#205#205#205#205#205#205#205#205#187\n"
-         "#186    0 : Exit          <<<    #186\n"
-         "#204#205#205#205#205#205#205#205#205#205#205#205#205#205#205#205#205#205#205#205#205#205#205#205#205#205#205#205#205#205#185\n");
-         } else {
-         printw (
-         "#201#205#205#205#205#205#205#205#205#205#205#205#205#205#205#205#205#205#205#205#205#205#205#205#205#205#205#205#205#205#187\n"
-         "#186    0 : Exit                 #186\n"
-         "#204#205#205#205#205#205#205#205#205#205#205#205#205#205#205#205#205#205#205#205#205#205#205#205#205#205#205#205#205#205#185\n");
+	    if (Curr == 0) {
+              printw (
+              "╒═════════════════════════════╕\n"
+              "│    0 : Exit          <<<    │\n"
+              "╞═════════════════════════════╡\n");
+            } else {
+              printw (
+              "╒═════════════════════════════╕\n"
+              "│    0 : Exit                 │\n"
+              "╞═════════════════════════════╡\n");
 	    }
-	 if (Curr == 1) {
-         printw (
-         "#186    1 : Add           <<<    #186\n"
-         "#204#205#205#205#205#205#205#205#205#205#205#205#205#205#205#205#205#205#205#205#205#205#205#205#205#205#205#205#205#205#185\n");
-         } else {
-         printw (
-         "#186    1 : Add                  #186\n"
-         "#204#205#205#205#205#205#205#205#205#205#205#205#205#205#205#205#205#205#205#205#205#205#205#205#205#205#205#205#205#205#185\n");
-         }
-	 if (Curr == 2) {
-         printw (
-         "#186    2 : Save in file  <<<    #186\n"
-         "#204#205#205#205#205#205#205#205#205#205#205#205#205#205#205#205#205#205#205#205#205#205#205#205#205#205#205#205#205#205#185\n");
-         } else {
-         printw (
-         "#186    2 : Save in file         #186\n"
-         "#204#205#205#205#205#205#205#205#205#205#205#205#205#205#205#205#205#205#205#205#205#205#205#205#205#205#205#205#205#205#185\n");
-         }
-         if (Curr == 3) {
-         printw (
-         "#186    3 : Download      <<<    #186\n"
-         "#204#205#205#205#205#205#205#205#205#205#205#205#205#205#205#205#205#205#205#205#205#205#205#205#205#205#205#205#205#205#185\n");
-         } else {
-         printw (
-         "#186    3 : Download             #186\n"
-         "#204#205#205#205#205#205#205#205#205#205#205#205#205#205#205#205#205#205#205#205#205#205#205#205#205#205#205#205#205#205#185\n");
-         }
-     	 if (Curr == 4) {
-         printw (
-         "#186    4 : Print         <<<    #186\n"
-         "#204#205#205#205#205#205#205#205#205#205#205#205#205#205#205#205#205#205#205#205#205#205#205#205#205#205#205#205#205#205#185\n");
-         } else {
-         printw (
-         "#186    4 : Print                #186\n"
-         "#204#205#205#205#205#205#205#205#205#205#205#205#205#205#205#205#205#205#205#205#205#205#205#205#205#205#205#205#205#205#185\n");
-         }
-      	 if (Curr == 5) {
-         printw (
-         "#186    5 : Sort          <<<    #186\n"
-         "#204#205#205#205#205#205#205#205#205#205#205#205#205#205#205#205#205#205#205#205#205#205#205#205#205#205#205#205#205#205#185\n");
-         } else {
-         printw (
-         "#186    5 : Sort                 #186\n"
-         "#204#205#205#205#205#205#205#205#205#205#205#205#205#205#205#205#205#205#205#205#205#205#205#205#205#205#205#205#205#205#185\n");
-         }
-     	 if (Curr == 6) {
-         printw (
-         "#186    6 : Delete        <<<    #186\n"
-         "#204#205#205#205#205#205#205#205#205#205#205#205#205#205#205#205#205#205#205#205#205#205#205#205#205#205#205#205#205#205#185\n");
-         } else {
-         printw (
-         "#186    6 : Delete               #186\n"
-         "#204#205#205#205#205#205#205#205#205#205#205#205#205#205#205#205#205#205#205#205#205#205#205#205#205#205#205#205#205#205#185\n");
-         }
-     	 if (Curr == 7) {
-         printw (
-         "#186    7 : Change        <<<    #186\n"
-         "#204#205#205#205#205#205#205#205#205#205#205#205#205#205#205#205#205#205#205#205#205#205#205#205#205#205#205#205#205#205#185\n");
-         } else {
-         printw (
-         "#186    7 : Change               #186\n"
-         "#204#205#205#205#205#205#205#205#205#205#205#205#205#205#205#205#205#205#205#205#205#205#205#205#205#205#205#205#205#205#185\n");
-         }
+	    if (Curr == 1) {
+              printw (
+              "│    1 : Add           <<<    │\n"
+              "╞═════════════════════════════╡\n");
+            } else {
+              printw (
+              "│    1 : Add                  │\n"
+              "╞═════════════════════════════╡\n");
+            }
+	    if (Curr == 2) {
+              printw (
+              "│    2 : Save in file  <<<    │\n"
+              "╞═════════════════════════════╡\n");
+            } else {
+              printw (
+              "│    2 : Save in file         │\n"
+              "╞═════════════════════════════╡\n");
+            }
+            if (Curr == 3) {
+              printw (
+              "│    3 : Download      <<<    │\n"
+              "╞═════════════════════════════╡\n");
+            } else {
+              printw (
+              "│    3 : Download             │\n"
+              "╞═════════════════════════════╡\n");
+            }
+	    if (Curr == 4) {
+              printw (
+              "│    4 : Print         <<<    │\n"
+              "╞═════════════════════════════╡\n");
+            } else {
+              printw (
+              "│    4 : Print                │\n"
+              "╞═════════════════════════════╡\n");
+            }
+	    if (Curr == 5) {
+              printw (
+              "│    5 : Sort          <<<    │\n"
+              "╞═════════════════════════════╡\n");
+            } else {
+              printw (
+              "│    5 : Sort                 │\n"
+              "╞═════════════════════════════╡\n");
+            }
+	    if (Curr == 6) {
+              printw (
+              "│    6 : Delete        <<<    │\n"
+              "╞═════════════════════════════╡\n");
+            } else {
+              printw (
+              "│    6 : Delete               │\n"
+              "╞═════════════════════════════╡\n");
+            }
+	    if (Curr == 7) {
+              printw (
+              "│    7 : Change        <<<    │\n"
+              "╘═════════════════════════════╛\n");
+            } else {
+              printw (
+              "│    7 : Change               │\n"
+              "╘═════════════════════════════╛\n");
+            }
      	 printw("\n");
 
   k = getch();
-  if (k == KEY_DOWN) {
-	    if (Curr == 7) Curr = 0;
+    if (k == KEY_DOWN) {
+            if (Curr == 7) Curr = 0;
             else Curr++;
             }
             clear();
@@ -398,11 +578,199 @@ int Menu() {
   return Curr;
 }
 
+
+int MenuSort() {
+    initscr();
+    noecho();
+    keypad(stdscr, true);
+
+  int Curr = 1, k = 0;
+
+  do {
+    if (k == 1) {
+    printw("╒══════════════════════════════════╕\n"
+           "│    1 : Return            <<<     │\n"
+           "╞══════════════════════════════════╡\n");
+	   } else {
+    printw("╒══════════════════════════════════╕\n"
+           "│    1 : Return                    │\n"
+           "╞══════════════════════════════════╡\n");
+    }
+    if (k == 2) {
+    printw("│    2 : Number Route      <<<     │\n"
+           "╞══════════════════════════════════╡\n");
+           } else {
+    printw("│    2 : Number Route              │\n"
+           "╞══════════════════════════════════╡\n");
+    }
+    if (k == 3) {
+    printw("│    3 : Bus Fleet Number  <<<     │\n"
+           "╞══════════════════════════════════╡\n");
+           } else {
+    printw("│    3 : Bus Fleet Number          │\n"
+           "╞══════════════════════════════════╡\n");
+    }
+    if (k == 4) {
+    printw("│    4 : Start Time        <<<     │\n"
+           "╞══════════════════════════════════╡\n");
+           } else {
+    printw("│    4 : Start Time                │\n"
+           "╞══════════════════════════════════╡\n");
+    }
+    if (k == 5) {
+    printw("│    5 : End Time          <<<     │\n"
+           "╞══════════════════════════════════╡\n");
+           } else {
+    printw("│    5 : End Time                  │\n"
+           "╞══════════════════════════════════╡\n");
+    }
+    if (k == 6) {
+    printw("│    6 : Route KM          <<<     │\n"
+           "╘══════════════════════════════════╛\n");
+           } else {
+    printw("│    6 : Route KM                  │\n"
+           "╘══════════════════════════════════╛\n");
+    }
+    printw("\n");
+    k = getch();
+    if (k == KEY_DOWN) {
+            if (Curr == 6) Curr = 1;
+            else Curr++;
+            }
+            clear();
+    if (k == KEY_UP) {
+            if (Curr == 1) Curr = 6;
+            else Curr--;
+            }
+            clear();
+
+    } while (k != 10);
+    getch();
+    refresh();
+    endwin();
+    return Curr;
+} // End of 'MenuSort' function
+
+int MenuSortD() {
+    initscr();
+    noecho();
+    keypad(stdscr, true);
+
+  int Curr = 1, k = 0;
+
+  do {
+    if (k == 1) {
+    printw("╒══════════════════════════════════╕\n"
+           "│    1 : Return            <<<     │\n"
+           "╞══════════════════════════════════╡\n");
+           } else {
+    printw("╒══════════════════════════════════╕\n"
+           "│    1 : Return                    │\n"
+           "╞══════════════════════════════════╡\n");
+    }
+    if (k == 2) {
+    printw("│    2 : Number Route      <<<     │\n"
+           "╞══════════════════════════════════╡\n");
+           } else {
+    printw("│    2 : Number Route              │\n"
+           "╞══════════════════════════════════╡\n");
+    }
+    if (k == 3) {
+    printw("│    3 : Bus Fleet Number  <<<     │\n"
+           "╞══════════════════════════════════╡\n");
+           } else {
+    printw("│    3 : Bus Fleet Number          │\n"
+           "╞══════════════════════════════════╡\n");
+    }
+    if (k == 4) {
+    printw("│    4 : Start Time        <<<     │\n"
+           "╞══════════════════════════════════╡\n");
+           } else {
+    printw("│    4 : Start Time                │\n"
+           "╞══════════════════════════════════╡\n");
+    }
+    if (k == 5) {
+    printw("│    5 : End Time          <<<     │\n"
+           "╞══════════════════════════════════╡\n");
+           } else {
+    printw("│    5 : End Time                  │\n"
+           "╞══════════════════════════════════╡\n");
+    }
+    if (k == 6) {
+    printw("│    6 : Route KM          <<<     │\n"
+           "╘══════════════════════════════════╛\n");
+           } else {
+    printw("│    6 : Route KM                  │\n"
+           "╘══════════════════════════════════╛\n");
+    }
+    printw("\n");
+    k = getch();
+    if (Curr == KEY_DOWN) {
+            if (Curr == 6) Curr = 1;
+            else Curr++;
+            }
+            clear();
+    if (k == KEY_UP) {
+            if (Curr == 1) Curr = 6;
+            else Curr--;
+            }
+            clear();
+
+    } while (k != 10);
+    getch();
+    refresh();
+    endwin();
+    return Curr;
+} // End of 'MenuSortD' function
+
+int MenuSortChoice () {
+    int Curr = 1, k;
+
+    initscr();
+    noecho();
+    keypad(stdscr, true);
+    do {
+     if (k == 1) {
+        printw ("╔═══════════════════════════════════════╗\n"
+                "║         Select the sort type:         ║\n"
+                "╠═══════════════════╦╦══════════════════╣\n"
+                "║  1 - Decrease <<  ║║  2 - Increase    ║\n"
+                "╚═══════════════════╩╩══════════════════╝\n");
+     } else {
+        printw ("╔═══════════════════════════════════════╗\n"
+                "║         Select the sort type:         ║\n"
+                "╠═══════════════════╦╦══════════════════╣\n"
+                "║  1 - Decrease     ║║  2 - Increase << ║\n"
+                "╚═══════════════════╩╩══════════════════╝\n");
+     }
+        k = getchar();
+        if (k == KEY_LEFT) {
+           if (Curr == 2) Curr = 1;
+                else Curr++;
+        }
+        clear();
+        if (k == KEY_RIGHT) {
+           if (Curr == 1) Curr = 2;
+                else Curr--;
+        }
+        clear();
+    } while (k != 10);
+    //if (Curr == 1) MenuSort();
+    //if (Curr == 2) MenuSortD();
+    getch();
+    refresh();
+    endwin();
+    return Curr;
+}
+
 int main( void ) {
   int Selection;
 
  while ((Selection = Menu()) != 48 && Selection != 27) {
     switch (Selection) {
+        case 0:
+          return 0;
+          break;
         case 1:
           Add();
           break;
@@ -417,9 +785,9 @@ int main( void ) {
         case 4:
           Print();
           break;
-        //case 5:
-        //  MenuSortChoice();
-        //  break;
+        case 5:
+          MenuSortChoice();
+          break;
         case 6:
           Del();
           break;
@@ -430,3 +798,73 @@ int main( void ) {
     }
 }
 } // End the function of the main menu
+
+
+int TypeSort (void) {
+    int Selection;
+
+    Selection = MenuSortChoice();
+        switch (Selection) {
+            case 1:
+            MenuSort();
+            break;
+            case 2:
+            MenuSortD();
+            break;
+        }
+}
+
+// Sorting menu function
+int mainsort(void) {
+  int Selection;
+
+  while ((Selection = MenuSort()) != 48 && Selection != 27) {
+    switch (Selection) {
+    //case 1:
+    //  main();
+    //  break;
+    case 2:
+      SortNumberRoute();
+      break;
+    case 3:
+      SortBusFleetNumber();
+      break;
+    case 4:
+      SortStartTime();
+      break;
+    case 5:
+      SortEndTime();
+      break;
+    case 6:
+      SortRouteKM();
+      break;
+    }
+  }
+} //End sorting menu function
+
+int mainsortD (void) {
+    int Selection;
+    while ((Selection = MenuSortD()) != 48 && Selection != 27) {
+    switch (Selection) {
+       // case 1:
+       //   main();
+       //   break;
+        case 2:
+          SortNumberRouteUbyvanie();
+          break;
+        case 3:
+          SortBusFleetNumberUbyvanie();
+          break;
+        case 4:
+          SortStartTimeUbyvanie();
+          break;
+        case 5:
+          SortEndTimeUbyvanie();
+          break;
+        case 6:
+          SortRouteKMUbyvanie();
+          break;
+    }
+    }
+}
+
