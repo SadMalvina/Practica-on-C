@@ -53,7 +53,7 @@ void Del( void ) {
 
   Print();
 
-  printw("Enter the number of the item to delete > ");
+  printw("Enter the number of the item to delete > \n");
   i = getch();
       i = i - 48;
       //putchar(d);
@@ -114,6 +114,7 @@ initscr();
   printw ("\n");
   Bus[Number].numberroute = ch;
   dh = 0;
+  ch = 0;
   printw ("╔══════════════════════════╗\n");
   printw ("║Enter bus fleet number >  ║\n");
   printw ("╚══════════════════════════╝\n");
@@ -139,12 +140,14 @@ initscr();
     }
   }
   Bus[Number].busfleetnumber = ch;
+  printw("\n");
   //putchar ('\n');
   ch = 0;
   dh = 0;
   printw ("╔══════════════════════════╗\n");
   printw ("║Enter start time >        ║\n");
   printw ("╚══════════════════════════╝\n");
+  printw ("Please, enter hours.\n");
   while (dh != 1) {
   a = getch();
     while (a != '\n') {
@@ -172,6 +175,8 @@ initscr();
     Bus[Number].starttimech = ch;
     dh = 0;
     ch = 0;
+    printw("\n");
+    printw("Please, enter minutes.\n");
   while (dh != 1) {
     a = getch();
     while (a != '\n') {
@@ -191,19 +196,22 @@ initscr();
           ch = 0;
         }
         if (ch < 0) {
-          printw ("Hours (minutes) cannot be less than 00.\n");
+          printw ("The clock (minutes) cannot be less than 00.\n");
           dh = 0;
           ch = 0;
         }
     }
   }
     Bus[Number].starttimem = ch;
+    printw("\n");
     //putchar('\n');
   ch = 0;
   dh = 0;
     printw ("╔══════════════════════════╗\n");
     printw ("║Enter end time >          ║\n");
     printw ("╚══════════════════════════╝\n");
+    printw ("Please, enter a hours.\n");
+    printw ("\n");
   while (dh != 1) {
     a = getch();
     while (a != '\n') {
@@ -223,7 +231,7 @@ initscr();
             dh = 0;
             ch = 0;
         } else if (ch < 0) {
-            printw("Hours (hours) cannot be less than 00.\n");
+            printw("The clock (hours) cannot be less than 00.\n");
 	     dh = 0;
             ch = 0;
         }
@@ -235,6 +243,8 @@ initscr();
     }
   }
     Bus[Number].endtimech = ch;
+    printw ("Please, enter a minutes.");
+    printw ("\n");
     //putchar('\n');
     dh = 0;
     ch = 0;
@@ -264,6 +274,7 @@ initscr();
 	  }
     }
   }
+  printw ("\n");
     Bus[Number].endtimem = ch;
     //putchar('\n');
     dh = 0;
@@ -473,6 +484,491 @@ void SortRouteKMUbyvanie( void ) {
   Print();
 } // End of 'SortRouteKMUbyvanie' function
 
+//Function change information
+void Change (void) {
+    initscr();
+    noecho();
+    keypad(stdscr, true);
+    int a, Curr = 1, dh = 0, ch = 0;
+    int tapok = 0, Num = 0; //Setting the counters
+    Print();
+    printw ("╔════════════════════════════════════════════════════════════╗\n");
+    printw ("║                                                            ║\n");
+    printw ("║    Enter the line number where you want to make changes    ║\n");
+    printw ("║                                                            ║\n");
+    printw ("╚════════════════════════════════════════════════════════════╝\n");
+    a = getch();
+    while (a != '\n') {
+      a = a - 48;
+      Num = Num * 10 + a;
+      //putchar (a);
+      a = getch();
+    }
+    //putchar ('\n');
+    do {
+            printw ("╔════════════════════════════════════════════════════════════╗\n");
+            printw ("║         Enter the desired character to change:             ║\n");
+            printw ("╠════════════════════════════════════════════════════════════╣\n");
+	if (Curr == 1) {
+            printw ("║              >>>>    1 > Number Route    <<<<              ║\n");
+	} else {
+	    printw ("║                      1 > Number Route                      ║\n");
+	}
+	if (Curr == 2) {
+            printw ("║             >>>>   2 > Bus Fleet Number   <<<<             ║\n");
+	} else {
+	    printw ("║                    2 > Bus Fleet Number                    ║\n");
+	}
+	if (Curr == 3) {
+            printw ("║               >>>>    3 > Start Time    <<<<               ║\n");
+	} else {
+	    printw ("║                       3 > Start Time                       ║\n");
+	}
+	if (Curr == 4) {
+            printw ("║                >>>>    4 > End Time   <<<<                 ║\n");
+	} else {
+	    printw ("║                        4 > End Time                        ║\n");
+	}
+	if (Curr == 5) {
+            printw ("║              >>>>    5 > Route in KM    <<<<               ║\n");
+	} else {
+	    printw ("║                      5 > Route in KM                       ║\n");
+	}
+            printw ("╚════════════════════════════════════════════════════════════╝\n");
+        tapok = getch();
+        //putchar (a);
+        // putchar ('\n');
+    } while (a != 10);
+    printw("\n");
+    if (tapok == KEY_DOWN) {
+            if (Curr == 5) Curr = 1;
+            else Curr++;
+            }
+            clear();
+    if (tapok == KEY_UP) {
+            if (Curr == 1) Curr = 5;
+            else Curr--;
+            }
+            clear();
+
+    switch (Curr) {
+        case 1:
+        printw ("Enter Number Route.");
+        while (dh != 1) {
+          a = getch();
+            while (a != '\n') {
+              if ((a > 57) || (a < 48)) {
+                while ((a > 57) || (a < 48)) {
+                  if (a != '\n') printw("Only numbers\n");
+                    a = getch();
+                  }
+                } 
+              a = a - 48;
+              ch = ch * 10 + a;
+              dh = 1;
+              a = getch();
+                if (ch > 9999) {
+                  printw ("Overflow\n");
+                  dh = 0;
+                  ch = 0;
+                }
+            }
+        }
+	Bus[Num].numberroute = ch;
+        break;
+        case 2:
+	printw ("Enter Bus Fleet Number.");
+        while (dh != 1) {
+          a = getch();
+            while (a != '\n') {
+              if ((a > 57) || (a < 48)) {
+                while ((a > 57) || (a < 48)) {
+                  if (a != '\n') printw("Only numbers\n");
+                    a = getch();
+                  }
+                }
+              a = a - 48;
+              ch = ch * 10 + a;
+              a = getch();
+              dh = 1;
+                if (ch > 99999) {
+                  printw ("Overflow\n");
+                  dh = 0;
+                  ch = 0;
+                }
+            }
+        }
+        Bus[Num].busfleetnumber = ch;
+        break;
+        case 3:
+        a = getch();
+        printw ("Please, enter hours.\n");
+        while (dh != 1) {
+          a = getch();
+            while (a != '\n') {
+              if ((a > 57) || (a < 48)) {
+                while ((a > 57) || (a < 48)) {
+                  if (a != '\n') printw("Only numbers\n");
+                    a = getch();
+                  }
+                }
+                a = a - 48;
+                ch = ch * 10 + a;
+                dh = 1;
+                a = getch();
+                if (ch > 23) {
+                  printw("The clock (hours) cannot be more than 23.\n");
+                  dh = 0;
+                  ch = 0;
+                } else if (ch < 0) {
+                  printw("Hours (hours) cannot be less than 00.\n");
+                  dh = 0;
+                  ch = 0;
+              }
+            }
+        }
+        Bus[Num].starttimech = ch;
+        ch = 0;
+        dh = 0;
+        printw("\n");
+        printw("Please, enter minutes.\n");
+          while (dh != 1) {
+            a = getch();
+              while (a != '\n') {
+                if ((a > 57) || (a < 48)) {
+                  while ((a > 57) || (a < 48)) {
+                    if (a != '\n') printw("Only numbers\n");
+                      a = getch();
+                    }
+                  }
+                  a = a - 48;
+                  ch = ch * 10 + a;
+                  a = getch();
+                  dh = 1;
+                  if (ch > 59) {
+                    printw ("The clock (minutes) cannot be more than 59.\n");
+                    dh = 0;
+                    ch = 0;
+                  }
+                  if (ch < 0) {
+                    printw ("The clock (minutes) cannot be less than 00.\n");
+                    dh = 0;
+                    ch = 0;
+                  }
+              }
+          }
+          Bus[Num].starttimem = ch;
+        break;
+        case 4:
+        while (dh != 1) {
+          a = getch();
+            while (a != '\n') {
+              if ((a > 57) || (a < 48)) {
+                while ((a > 57) || (a < 48)) {
+                  if (a != '\n') printw("Only numbers\n");
+                    a = getch();
+                  }
+                }
+              a = a - 48;
+              ch = ch * 10 + a;
+              dh = 1;
+              a = getch();
+              if (ch > 23) {
+                printw("The clock (hours) cannot be more than 23.\n");
+                dh = 0;
+                ch = 0;
+              } else if (ch < 0) {
+                printw("Hours (hours) cannot be less than 00.\n");
+	        dh = 0;
+                ch = 0;
+              }
+              if (ch == Bus[Num].starttimech) {
+                printw("The interval between departure and arrival hoursis at least an hour!\n");
+                dh = 0;
+                ch = 0;
+              }
+            }
+        }
+        Bus[Num].endtimech = ch;
+        dh = 0;
+        ch = 0;
+        while (dh != 1) {
+          a = getch();
+            while (a != '\n') {
+              if ((a > 57) || (a < 48)) {
+                while ((a > 57) || (a < 48)) {
+                  if (a != '\n') printw("Only numbers\n");
+                    a = getch();
+                  }
+                }
+              a = a - 48;
+              ch = ch * 10 + a;
+              a = getch();
+              dh = 1;
+              if (ch > 59) {
+                printw ("The clock (minutes) cannot be more than 59.\n");
+                dh = 0;
+                ch = 0;
+              }
+              if (ch < 0) {
+                printw ("Hours (minutes) cannot be less than 00.\n");
+                dh = 0;
+                ch = 0;
+	      }
+             }
+	}
+        Bus[Num].endtimem = ch;
+        break;
+        case 5:
+	printw ("Enter the route in m.");
+        while (dh != 1) {
+          a = getch();
+            while (a != '\n') {
+              if ((a > 57) || (a < 48)) {
+                while ((a > 57) || (a < 48)) {
+                  if (a != '\n') printw("Only numbers\n");
+                    a = getch();
+                  }
+                }
+                a = a - 48;
+                ch = ch * 10 + a;
+                a = getch();
+                dh = 1;
+                if (ch > 999999) {
+                  printw ("Overflow\n");
+                  dh = 0;
+                  ch = 0;
+                }
+              }
+        }
+        ch = ch / 1000;
+        Bus[Num].routekm = ch;
+        break;
+    }
+    Print();
+    getch();
+    refresh();
+    endwin();
+}
+
+void MenuSortChoice (void) {
+    int Curr = 1, k;
+    int Curr2 = 1, k2;
+    initscr();
+    noecho();
+    keypad(stdscr, true);
+    do {
+     if (Curr == 1) {
+        printw ("╔════════════════════════════════════════╗\n");
+        printw ("║          Select the sort type:         ║\n");
+        printw ("╠═══════════════════╦╦═══════════════════╣\n");
+        printw ("║  1 - Decrease <<  ║║  2 - Increase     ║\n");
+        printw ("╚═══════════════════╩╩═══════════════════╝\n");
+     }
+     if (Curr == 2) {
+        printw ("╔════════════════════════════════════════╗\n");
+        printw ("║          Select the sort type:         ║\n");
+        printw ("╠═══════════════════╦╦═══════════════════╣\n");
+        printw ("║  1 - Decrease     ║║  2 - Increase <<  ║\n");
+        printw ("╚═══════════════════╩╩═══════════════════╝\n");
+     }
+     printw ("\n");
+        k = getchar();
+        if (k == KEY_LEFT) {
+           if (Curr == 2) Curr = 1;
+                else Curr++;
+        }
+        clear();
+        if (k == KEY_RIGHT) {
+           if (Curr == 1) Curr = 2;
+                else Curr--;
+        }
+        clear();
+    } while (k != 10);
+    getch();
+    refresh();
+    endwin();
+    if (Curr == 1) {
+         initscr();
+         noecho();
+         keypad(stdscr, true);
+
+  do {
+    if (Curr2 == 1) {
+    printw("╒══════════════════════════════════╕\n"
+           "│    1 : Return            <<<     │\n"
+           "╞══════════════════════════════════╡\n");
+           } else {
+    printw("╒══════════════════════════════════╕\n"
+           "│    1 : Return                    │\n"
+           "╞══════════════════════════════════╡\n");
+    }
+    if (Curr2 == 2) {
+    printw("│    2 : Number Route      <<<     │\n"
+           "╞══════════════════════════════════╡\n");
+           } else {
+    printw("│    2 : Number Route              │\n"
+           "╞══════════════════════════════════╡\n");
+    }
+    if (Curr2 == 3) {
+    printw("│    3 : Bus Fleet Number  <<<     │\n"
+           "╞══════════════════════════════════╡\n");
+           } else {
+    printw("│    3 : Bus Fleet Number          │\n"
+           "╞══════════════════════════════════╡\n");
+    }
+    if (Curr2 == 4) {
+    printw("│    4 : Start Time        <<<     │\n"
+           "╞══════════════════════════════════╡\n");
+           } else {
+    printw("│    4 : Start Time                │\n"
+           "╞══════════════════════════════════╡\n");
+    }
+    if (Curr2 == 5) {
+    printw("│    5 : End Time          <<<     │\n"
+           "╞══════════════════════════════════╡\n");
+           } else {
+    printw("│    5 : End Time                  │\n"
+           "╞══════════════════════════════════╡\n");
+    }
+    if (Curr2 == 6) {
+    printw("│    6 : Route KM          <<<     │\n"
+           "╘══════════════════════════════════╛\n");
+           } else {
+    printw("│    6 : Route KM                  │\n"
+           "╘══════════════════════════════════╛\n");
+    }
+    printw("\n");
+    k2 = getch();
+    if (k2 == KEY_DOWN) {
+            if (Curr2 == 6) Curr2 = 1;
+            else Curr2++;
+            }
+            clear();
+    if (k2 == KEY_UP) {
+            if (Curr2 == 1) Curr2 = 6;
+            else Curr2--;
+            }
+            clear();
+
+    } while (k2 != 10);
+    getch();
+    refresh();
+    endwin();
+
+    
+    switch (Curr2) {
+        case 1:
+          main();
+          break;
+        case 2:
+          SortNumberRouteUbyvanie();
+          break;
+        case 3:
+          SortBusFleetNumberUbyvanie();
+          break;
+        case 4:
+          SortStartTimeUbyvanie();
+          break;
+        case 5:
+          SortEndTimeUbyvanie();
+          break;
+        case 6:
+          SortRouteKMUbyvanie();
+          break;
+    }
+}
+ if (Curr == 2) {
+    initscr();
+    noecho();
+    keypad(stdscr, true);
+
+  do {
+    if (Curr2 == 1) {
+    printw("╒══════════════════════════════════╕\n"
+           "│    1 : Return            <<<     │\n"
+           "╞══════════════════════════════════╡\n");
+	   } else {
+    printw("╒══════════════════════════════════╕\n"
+           "│    1 : Return                    │\n"
+           "╞══════════════════════════════════╡\n");
+    }
+    if (Curr2 == 2) {
+    printw("│    2 : Number Route      <<<     │\n"
+           "╞══════════════════════════════════╡\n");
+           } else {
+    printw("│    2 : Number Route              │\n"
+           "╞══════════════════════════════════╡\n");
+    }
+    if (Curr2 == 3) {
+    printw("│    3 : Bus Fleet Number  <<<     │\n"
+           "╞══════════════════════════════════╡\n");
+           } else {
+    printw("│    3 : Bus Fleet Number          │\n"
+           "╞══════════════════════════════════╡\n");
+    }
+    if (Curr2 == 4) {
+    printw("│    4 : Start Time        <<<     │\n"
+           "╞══════════════════════════════════╡\n");
+           } else {
+    printw("│    4 : Start Time                │\n"
+           "╞══════════════════════════════════╡\n");
+    }
+    if (Curr2 == 5) {
+    printw("│    5 : End Time          <<<     │\n"
+           "╞══════════════════════════════════╡\n");
+           } else {
+    printw("│    5 : End Time                  │\n"
+           "╞══════════════════════════════════╡\n");
+    }
+    if (Curr2 == 6) {
+    printw("│    6 : Route KM          <<<     │\n"
+           "╘══════════════════════════════════╛\n");
+           } else {
+    printw("│    6 : Route KM                  │\n"
+           "╘══════════════════════════════════╛\n");
+    }
+    printw("\n");
+    k2 = getch();
+    if (k2 == KEY_DOWN) {
+            if (Curr2 == 6) Curr2 = 1;
+            else Curr2++;
+            }
+            clear();
+    if (k2 == KEY_UP) {
+            if (Curr2 == 1) Curr2 = 6;
+            else Curr2--;
+            }
+            clear();
+
+    } while (k2 != 10);
+    getch();
+    refresh();
+    endwin();
+  
+     switch (Curr2) {
+    case 1:
+      main();
+      break;
+    case 2:
+      SortNumberRoute();
+      break;
+    case 3:
+      SortBusFleetNumber();
+      break;
+    case 4:
+      SortStartTime();
+      break;
+    case 5:
+      SortEndTime();
+      break;
+    case 6:
+      SortRouteKM();
+      break;
+    }
+  }
+}
+
 int Menu() {
 
   setlocale(LC_ALL, "");
@@ -578,191 +1074,6 @@ int Menu() {
   return Curr;
 }
 
-
-int MenuSort() {
-    initscr();
-    noecho();
-    keypad(stdscr, true);
-
-  int Curr = 1, k = 0;
-
-  do {
-    if (k == 1) {
-    printw("╒══════════════════════════════════╕\n"
-           "│    1 : Return            <<<     │\n"
-           "╞══════════════════════════════════╡\n");
-	   } else {
-    printw("╒══════════════════════════════════╕\n"
-           "│    1 : Return                    │\n"
-           "╞══════════════════════════════════╡\n");
-    }
-    if (k == 2) {
-    printw("│    2 : Number Route      <<<     │\n"
-           "╞══════════════════════════════════╡\n");
-           } else {
-    printw("│    2 : Number Route              │\n"
-           "╞══════════════════════════════════╡\n");
-    }
-    if (k == 3) {
-    printw("│    3 : Bus Fleet Number  <<<     │\n"
-           "╞══════════════════════════════════╡\n");
-           } else {
-    printw("│    3 : Bus Fleet Number          │\n"
-           "╞══════════════════════════════════╡\n");
-    }
-    if (k == 4) {
-    printw("│    4 : Start Time        <<<     │\n"
-           "╞══════════════════════════════════╡\n");
-           } else {
-    printw("│    4 : Start Time                │\n"
-           "╞══════════════════════════════════╡\n");
-    }
-    if (k == 5) {
-    printw("│    5 : End Time          <<<     │\n"
-           "╞══════════════════════════════════╡\n");
-           } else {
-    printw("│    5 : End Time                  │\n"
-           "╞══════════════════════════════════╡\n");
-    }
-    if (k == 6) {
-    printw("│    6 : Route KM          <<<     │\n"
-           "╘══════════════════════════════════╛\n");
-           } else {
-    printw("│    6 : Route KM                  │\n"
-           "╘══════════════════════════════════╛\n");
-    }
-    printw("\n");
-    k = getch();
-    if (k == KEY_DOWN) {
-            if (Curr == 6) Curr = 1;
-            else Curr++;
-            }
-            clear();
-    if (k == KEY_UP) {
-            if (Curr == 1) Curr = 6;
-            else Curr--;
-            }
-            clear();
-
-    } while (k != 10);
-    getch();
-    refresh();
-    endwin();
-    return Curr;
-} // End of 'MenuSort' function
-
-int MenuSortD() {
-    initscr();
-    noecho();
-    keypad(stdscr, true);
-
-  int Curr = 1, k = 0;
-
-  do {
-    if (k == 1) {
-    printw("╒══════════════════════════════════╕\n"
-           "│    1 : Return            <<<     │\n"
-           "╞══════════════════════════════════╡\n");
-           } else {
-    printw("╒══════════════════════════════════╕\n"
-           "│    1 : Return                    │\n"
-           "╞══════════════════════════════════╡\n");
-    }
-    if (k == 2) {
-    printw("│    2 : Number Route      <<<     │\n"
-           "╞══════════════════════════════════╡\n");
-           } else {
-    printw("│    2 : Number Route              │\n"
-           "╞══════════════════════════════════╡\n");
-    }
-    if (k == 3) {
-    printw("│    3 : Bus Fleet Number  <<<     │\n"
-           "╞══════════════════════════════════╡\n");
-           } else {
-    printw("│    3 : Bus Fleet Number          │\n"
-           "╞══════════════════════════════════╡\n");
-    }
-    if (k == 4) {
-    printw("│    4 : Start Time        <<<     │\n"
-           "╞══════════════════════════════════╡\n");
-           } else {
-    printw("│    4 : Start Time                │\n"
-           "╞══════════════════════════════════╡\n");
-    }
-    if (k == 5) {
-    printw("│    5 : End Time          <<<     │\n"
-           "╞══════════════════════════════════╡\n");
-           } else {
-    printw("│    5 : End Time                  │\n"
-           "╞══════════════════════════════════╡\n");
-    }
-    if (k == 6) {
-    printw("│    6 : Route KM          <<<     │\n"
-           "╘══════════════════════════════════╛\n");
-           } else {
-    printw("│    6 : Route KM                  │\n"
-           "╘══════════════════════════════════╛\n");
-    }
-    printw("\n");
-    k = getch();
-    if (Curr == KEY_DOWN) {
-            if (Curr == 6) Curr = 1;
-            else Curr++;
-            }
-            clear();
-    if (k == KEY_UP) {
-            if (Curr == 1) Curr = 6;
-            else Curr--;
-            }
-            clear();
-
-    } while (k != 10);
-    getch();
-    refresh();
-    endwin();
-    return Curr;
-} // End of 'MenuSortD' function
-
-int MenuSortChoice () {
-    int Curr = 1, k;
-
-    initscr();
-    noecho();
-    keypad(stdscr, true);
-    do {
-     if (k == 1) {
-        printw ("╔═══════════════════════════════════════╗\n"
-                "║         Select the sort type:         ║\n"
-                "╠═══════════════════╦╦══════════════════╣\n"
-                "║  1 - Decrease <<  ║║  2 - Increase    ║\n"
-                "╚═══════════════════╩╩══════════════════╝\n");
-     } else {
-        printw ("╔═══════════════════════════════════════╗\n"
-                "║         Select the sort type:         ║\n"
-                "╠═══════════════════╦╦══════════════════╣\n"
-                "║  1 - Decrease     ║║  2 - Increase << ║\n"
-                "╚═══════════════════╩╩══════════════════╝\n");
-     }
-        k = getchar();
-        if (k == KEY_LEFT) {
-           if (Curr == 2) Curr = 1;
-                else Curr++;
-        }
-        clear();
-        if (k == KEY_RIGHT) {
-           if (Curr == 1) Curr = 2;
-                else Curr--;
-        }
-        clear();
-    } while (k != 10);
-    //if (Curr == 1) MenuSort();
-    //if (Curr == 2) MenuSortD();
-    getch();
-    refresh();
-    endwin();
-    return Curr;
-}
-
 int main( void ) {
   int Selection;
 
@@ -791,80 +1102,9 @@ int main( void ) {
         case 6:
           Del();
           break;
-        //case 7:
-        //  Change();
-        //  Print();
-        //  break;
+        case 7:
+          Change();
+          break;
     }
 }
 } // End the function of the main menu
-
-
-int TypeSort (void) {
-    int Selection;
-
-    Selection = MenuSortChoice();
-        switch (Selection) {
-            case 1:
-            MenuSort();
-            break;
-            case 2:
-            MenuSortD();
-            break;
-        }
-}
-
-// Sorting menu function
-int mainsort(void) {
-  int Selection;
-
-  while ((Selection = MenuSort()) != 48 && Selection != 27) {
-    switch (Selection) {
-    //case 1:
-    //  main();
-    //  break;
-    case 2:
-      SortNumberRoute();
-      break;
-    case 3:
-      SortBusFleetNumber();
-      break;
-    case 4:
-      SortStartTime();
-      break;
-    case 5:
-      SortEndTime();
-      break;
-    case 6:
-      SortRouteKM();
-      break;
-    }
-  }
-} //End sorting menu function
-
-int mainsortD (void) {
-    int Selection;
-    while ((Selection = MenuSortD()) != 48 && Selection != 27) {
-    switch (Selection) {
-       // case 1:
-       //   main();
-       //   break;
-        case 2:
-          SortNumberRouteUbyvanie();
-          break;
-        case 3:
-          SortBusFleetNumberUbyvanie();
-          break;
-        case 4:
-          SortStartTimeUbyvanie();
-          break;
-        case 5:
-          SortEndTimeUbyvanie();
-          break;
-        case 6:
-          SortRouteKMUbyvanie();
-          break;
-    }
-    }
-}
-
