@@ -76,8 +76,8 @@ void Del( void ) {
 
 // Function for adding an element
 void Add( void ) {
-char a;
-int i = 0, ch = 0, dh = 0; ////Setting the counter
+int a;
+int i = 0, ch = 0, dh = 0, res = 0;; ////Setting the counter
 initscr();
   echo();
   keypad(stdscr, true);
@@ -89,17 +89,19 @@ initscr();
   printw ("║Enter number route >      ║\n");
   printw ("╚══════════════════════════╝\n");
   while (dh != 1) {
+    res = ch;
     a = getch();
     while (a != '\n') {
         if ((a > 57) || (a < 48)) {
-          while ((a > 57) || (a < 48)) {
+          while ((a > 57 || a < 48) && a != KEY_BACKSPACE) {
             if (a != '\n') printw("Only numbers\n");
             a = getch();
           }
         }
-	//if (a == KEY_DOWN) {
-	//	a = ' ';
-        //} 
+	if (a == KEY_BACKSPACE) {
+		ch = res;
+		printw ("ch = %d res = %d\n", ch, res);
+        } else {
         a = a - 48;
         ch = ch * 10 + a;
         dh = 1;
@@ -109,6 +111,8 @@ initscr();
           dh = 0;
           ch = 0;
         }
+	}
+	res = ch;
     }
   }
   printw ("\n");
@@ -504,6 +508,8 @@ void Change (void) {
       //putchar (a);
       a = getch();
     }
+    Num--;
+    getchar();
     //putchar ('\n');
     do {
             printw ("╔════════════════════════════════════════════════════════════╗\n");
@@ -536,9 +542,7 @@ void Change (void) {
 	}
             printw ("╚════════════════════════════════════════════════════════════╝\n");
         tapok = getch();
-        //putchar (a);
-        // putchar ('\n');
-    } while (a != 10);
+   // } while (a != 10);
     printw("\n");
     if (tapok == KEY_DOWN) {
             if (Curr == 5) Curr = 1;
@@ -550,10 +554,12 @@ void Change (void) {
             else Curr--;
             }
             clear();
-
+    } while (tapok != 10);
     switch (Curr) {
         case 1:
-        printw ("Enter Number Route.");
+	printw ("╔══════════════════════╗\n");
+        printw ("║  Enter Number Route. ║\n");
+	printw ("╚══════════════════════╝\n");
         while (dh != 1) {
           a = getch();
             while (a != '\n') {
@@ -575,9 +581,15 @@ void Change (void) {
             }
         }
 	Bus[Num].numberroute = ch;
+	printw ("Changed on %d\n", Bus[Num].numberroute);
+	printw ("Num = %d\n", Num);
+	getchar();
+	getchar();	
         break;
         case 2:
-	printw ("Enter Bus Fleet Number.");
+	printw ("╔═════════════════════════╗\n");
+	printw ("║ Enter Bus Fleet Number. ║\n");
+	printw ("╚═════════════════════════╝\n");
         while (dh != 1) {
           a = getch();
             while (a != '\n') {
@@ -602,7 +614,9 @@ void Change (void) {
         break;
         case 3:
         a = getch();
-        printw ("Please, enter hours.\n");
+	printw ("╔════════════════════════╗\n");
+        printw ("║  Please, enter hours.  ║\n");
+	printw ("╚════════════════════════╝\n");
         while (dh != 1) {
           a = getch();
             while (a != '\n') {
@@ -624,6 +638,11 @@ void Change (void) {
                   printw("Hours (hours) cannot be less than 00.\n");
                   dh = 0;
                   ch = 0;
+		  if (ch > Bus[Num].endtimech) {
+			  printw ("Start time cannot be %d, because end time is %d", ch, Bus[Num].endtimech);
+			  dh = 0;
+			  ch = 0;
+		  }
               }
             }
         }
@@ -631,7 +650,9 @@ void Change (void) {
         ch = 0;
         dh = 0;
         printw("\n");
-        printw("Please, enter minutes.\n");
+	printw ("╔════════════════════════╗\n");
+        printw ("║ Please, enter minutes. ║\n");
+	printw ("╚════════════════════════╝\n");
           while (dh != 1) {
             a = getch();
               while (a != '\n') {
@@ -660,8 +681,11 @@ void Change (void) {
           Bus[Num].starttimem = ch;
         break;
         case 4:
+	printw ("╔════════════════════════╗\n");
+        printw ("║  Please, enter hours.  ║\n");
+        printw ("╚════════════════════════╝\n");
+	a = getch();
         while (dh != 1) {
-          a = getch();
             while (a != '\n') {
               if ((a > 57) || (a < 48)) {
                 while ((a > 57) || (a < 48)) {
@@ -692,6 +716,10 @@ void Change (void) {
         Bus[Num].endtimech = ch;
         dh = 0;
         ch = 0;
+	printw ("\n");
+	printw ("╔════════════════════════╗\n");
+        printw ("║ Please, enter minutes. ║\n");
+        printw ("╚════════════════════════╝\n");
         while (dh != 1) {
           a = getch();
             while (a != '\n') {
@@ -720,7 +748,9 @@ void Change (void) {
         Bus[Num].endtimem = ch;
         break;
         case 5:
-	printw ("Enter the route in m.");
+	printw ("╔═════════════════════════╗\n");
+	printw ("║  Enter the route in m.  ║\n");
+	printw ("╚═════════════════════════╝\n");
         while (dh != 1) {
           a = getch();
             while (a != '\n') {
@@ -757,6 +787,7 @@ void MenuSortChoice (void) {
     initscr();
     noecho();
     keypad(stdscr, true);
+    getchar();
     do {
      if (Curr == 1) {
         printw ("╔════════════════════════════════════════╗\n");
@@ -773,7 +804,7 @@ void MenuSortChoice (void) {
         printw ("╚═══════════════════╩╩═══════════════════╝\n");
      }
      printw ("\n");
-        k = getchar();
+        k = getch();
         if (k == KEY_LEFT) {
            if (Curr == 2) Curr = 1;
                 else Curr++;
