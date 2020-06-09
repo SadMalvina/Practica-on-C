@@ -1,0 +1,130 @@
+#include <stdio.h>
+#include <string.h>
+
+typedef struct tagITEM2 {
+  char busstop[51];
+  char gps1[9];
+  char gps2[9];
+  char longitude, latitude;
+} ITEM2;
+
+  ITEM2 Busstop[100];
+    int Number2 = 0;
+
+void Print( void ) {
+  int i; //Setting the counter
+      printf("╔═══╦═══════════════════════════════════════════════════╦═══════════════╦═════════╦══════════════╦═════════╗\n"); //"Header" of the graphic
+      printf("║ N ║                  Busstop name                     ║ GPS Longitude ║Longitude║ GPS Latitude ║ Latitude║\n"); //table when output
+  for (i = 0; i < Number2; i++) { //Setting the "for" counter to output array elements by number
+      printf("╠═══╬═══════════════════════════════════════════════════╬═══════════════╬═════════╬══════════════╬═════════╣\n");
+      printf("║%3i║%51s║       %8s║    %c    ║      %8s║    %c    ║\n",
+    i + 1, Busstop[i].busstop, Busstop[i].gps1, 
+           Busstop[i].longitude, Busstop[i].gps2, Busstop[i].latitude);
+  }
+      printf("╚═══╩═══════════════════════════════════════════════════╩═══════════════╩═════════╩══════════════╩═════════╝\n"); //End of the graphic table
+} // End of 'Print' function
+
+// Function for adding an element
+void Add( void ) {
+char a;
+int i = 0; ////Setting the counter
+  if (Number2 == 99)
+  {
+    fprintf(stderr, "You can't add another element\n");
+    return;
+  }
+  putchar ('\n');
+  printf ("╔══════════════════════════╗\n");
+  printf ("║ Enter busstop name >     ║\n");
+  printf ("╚══════════════════════════╝\n");
+  //while (dh != 1) {
+    a = getchar();
+    for (i = 0; a != '\n' && i < 51; i++) {
+        Busstop[Number2].busstop[i] = a;
+        putchar(a);
+        a = getchar();
+    }
+    Busstop[Number2].busstop[i] = '\0';
+    putchar ('\n');
+    }
+  //}
+  //fflush(stdin);
+  //dh = 0;
+  printf ("╔══════════════════════════╗\n");
+  printf ("║ Enter GPS Longitude >    ║\n");
+  printf ("╚══════════════════════════╝\n");
+  //while (dh != 1) {
+    a = getchar();
+    for (i = 0; a != '\n' && i < 9; i++) {
+        if (i = 2) {
+            Busstop[Number2].gps1[i] = '.';
+        } else {
+        Busstop[Number2].gps1[i] = a;
+        putchar(a);
+        a = getchar();
+        }
+    }
+    Busstop[Number2].gps1[i] = '\0';
+    putchar ('\n');
+    }
+  //}
+  fflush(stdin);
+  //ch = 0;
+  //dh = 0;
+  printf ("╔══════════════════════════╗\n");
+  printf ("║ Choose Longitude  >      ║\n");
+  printf ("╚══════════════════════════╝\n");
+  //while (dh != 1) {
+  a = getchar();
+  switch (a) {
+      case 49:
+        Busstop[Number2].longitude = 'N';
+        case 50:
+        Busstop[Number2].longitude = 'S';
+  }
+  putchar (a);
+  putchar ('\n');
+  //ch = 0;
+  //dh = 0;
+    printf ("╔══════════════════════════╗\n");
+    printf ("║ Enter GPS Latitude >     ║\n");
+    printf ("╚══════════════════════════╝\n");
+  //while (dh != 1) {
+    a = getchar();
+    for (i = 0; a != '\n' && i < 9; i++) {
+        if (i = 2) {
+            Busstop[Number2].gps2[i] = '.';
+        } else {
+        Busstop[Number2].gps2[i] = a;
+        putchar(a);
+        a = getchar();
+        }
+    }
+    Busstop[Number2].gps2[i] = '\0';
+    putchar ('\n');
+    }
+  //}
+    //dh = 0;
+    //ch = 0;
+  printf ("╔══════════════════════════╗\n");
+  printf ("║ Choose Latitude  >       ║\n");
+  printf ("╚══════════════════════════╝\n");
+  //while (dh != 1) {
+  a = getchar();
+  switch (a) {
+      case 49:
+        Busstop[Number2].latitude = 'N';
+        case 50:
+        Busstop[Number2].latitude = 'S';
+  }
+  putchar (a);
+  putchar ('\n');
+  
+  Number2++;
+} // End of 'Add' function
+
+int main() {
+ Add();
+ Print();
+    return 0;
+}
