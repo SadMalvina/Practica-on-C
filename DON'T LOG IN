@@ -1,0 +1,291 @@
+#include <ncurses.h>
+#include <stdio.h>
+#include <locale.h>
+
+/* Структура для хранения информации про один элемент */
+typedef struct tagITEM {
+char busstop[20], gps1[9], gps2[9], longitude, latitude;
+} ITEM;
+
+/* Массив максимум на 100 остановок */
+ITEM Busstop[100];
+
+/* Количество занятых элементов в массиве */
+int Number2 = 0;
+
+/* Функция для вывода всех элеиентов */
+void Print( void ) {
+int i;
+initscr();
+
+printw("╔═══╦══════════════════════════════════════════════════╦═══════════╦═══╦═══════════╦═══╗\n"
+       "║ N ║                   Busstop name                   ║ GPS long. ║Lon║ GPS leng. ║Len║\n");
+for (i = 0; i < Number2; i++) {
+  printw("╠═══╬══════════════════════════════════════════════════╬═══════════╬═══╬═══════════╬═══╣\n");
+  printf("║%3i║%-50s║%-11s║ %c ║%-11s║ %c ║\n", i + 1, Busstop[i].busstop,
+  Busstop[i].gps1, Busstop[i].longitude, Busstop[i].gps2, Busstop[i].latitude);
+}
+printw("╚═══╩══════════════════════════════════════════════════╩═══════════╩═══╩═══════════╩═══╝\n");
+getch();
+refresh();
+endwin();
+} /* End of 'Print' function */
+
+void PagePrint(void) {
+int i = 1, page = 10, ch = 0, a;
+noecho();
+keypad(stdscr, true);
+
+initscr();
+printw("╔═══╦══════════════════════════════════════════════════╦═══════════╦═══╦═══════════╦═══╗\n"
+       "║ N ║                   Busstop name                   ║ GPS long. ║Lon║ GPS leng. ║Len║\n");
+for (i--; i <= page; i++) {
+  printw("╠═══╬══════════════════════════════════════════════════╬═══════════╬═══╬═══════════╬═══╣\n");
+  printf("║%3i║%-50s║%-11s║ %c ║%-11s║ %c ║\n", i + 1, Busstop[i].busstop,
+  Busstop[i].gps1, Busstop[i].longitude, Busstop[i].gps2, Busstop[i].latitude);
+}
+printw("╚═══╩══════════════════════════════════════════════════╩═══════════╩═══╩═══════════╩═══╝\n");
+printw ("Last page - LEFT (<-) | Next page - RIGHT (->) | Exit - BACKSPACE\n");
+a = getch();
+  if (a == KEY_LEFT) {
+    if (i > 11) {
+      i -= 20;
+      page -= 10;
+      ch = 0;
+    } else if (i == 11) {
+      i = 91;
+      page = 100;
+      ch = 0;
+    }
+    clear();
+    refresh();
+    endwin();
+  }
+  if (a == KEY_RIGHT) {
+    if (i >= 100) {
+      i = 1;
+      page = 10;
+      ch = 0;
+    } else {
+      page += 10;
+      ch = 0;
+    }
+    clear();
+    refresh();
+    endwin();
+  }
+  if (a == KEY_BACKSPACE) {
+    ch = 1;
+  }
+  }
+getch();
+refresh();
+endwin();
+} /* End of 'Print' function */
+
+
+/* Функция для добавления элемента */
+void Add( void ) {
+  initscr();
+  echo();
+  keypad(stdscr, true);
+  char a, k;
+  int i = 0, Curr = 1;
+  if (Number2 == 99) {
+    printw(stderr, "Невозможно добавить еще один элемент\n");
+    return;
+  }
+  a = getch();
+  printw ("╔══════════════════════════╗\n"
+          "║   Enter busstop name >   ║\n"
+          "╚══════════════════════════╝\n");
+a = getch();
+for (i = 0; (a != '\n' && i<50); i++) {
+Busstop[Number2].busstop[i] = a;
+a = getch();
+}
+Busstop[Number2].busstop[i] = '\0';
+printw ("╔══════════════════════════╗\n");
+printw ("║   Enter GPS Longitude >  ║\n");
+printw ("╚══════════════════════════╝\n");
+a = getch();
+for (i = 0; (a != '\n' && i<9); i++) {
+Busstop[Number2].gps1[i] = a;
+a = getch();
+printw ("%s\n", Busstop[Number2].gps1);
+printw ("%d\n", i);
+}
+Busstop[Number2].gps1[i] = '\0';
+printw ("%s\n", Busstop[Number2].gps1);
+i = 0;
+refresh();
+endwin();
+initscr();
+  do {
+     if (Curr == 1) {
+         printw("╔═════════════════════════════════════════╗\n"
+                "║          Select the longitude:          ║\n"
+                "╠═══════════════════╦╦════════════════════╣\n"
+                "║  1 - Western  <<  ║║   2 - Eastern      ║\n"
+                "╚═══════════════════╩╩════════════════════╝\n");
+     }
+     if (Curr == 2) {
+         printw("╔═════════════════════════════════════════╗\n"
+                "║          Select the longitude:          ║\n"
+                "╠═══════════════════╦╦════════════════════╣\n"
+                "║  1 - Western      ║║   2 - Eastern  <<  ║\n"
+                "╚═══════════════════╩╩════════════════════╝\n");
+     }
+     printw ("\n");
+        k = getch();
+        if (k == KEY_LEFT) {
+           if (Curr == 2) Curr = 1;
+                else Curr++;
+        }
+        clear();
+        if (k == KEY_RIGHT) {
+           if (Curr == 1) Curr = 2;
+                else Curr--;
+        }
+        clear();
+    } while (k != 10);
+    if (Curr == 1) {
+	    longitude = 'W';
+    } else longitude = 'E';
+    getch();
+    refresh();
+    endwin();
+initscr();
+a = getch();
+printw ("╔══════════════════════════╗\n");
+printw ("║   Enter GPS Longitude >  ║\n");
+printw ("╚══════════════════════════╝\n");
+do {
+a = getch();
+if(a != '\n' && a != '\t') { //&& i < 10) {
+Busstop[Number2].gps1[i++] = a;
+//printf ("%s\n", str);
+//printf ("%d", i);
+}
+}
+while(a != '\n');
+Busstop[Number2].gps1[i] = 0;
+Curr = 1;
+do {
+     if (Curr == 1) {
+         printw("╔══════════════════════════════════════════╗\n"
+                "║            Select the latitude:          ║\n"
+                "╠════════════════════╦╦════════════════════╣\n"
+                "║  1 - Northern  <<  ║║   2 - Southern     ║\n"
+                "╚════════════════════╩╩════════════════════╝\n");
+     }
+     if (Curr == 2) {
+         printw("╔═══════════════════════════════════════════╗\n"
+                "║            Select the latitude:           ║\n"
+                "╠════════════════════╦╦═════════════════════╣\n"
+                "║  1 - Northern      ║║   2 - Southern  <<  ║\n"
+                "╚════════════════════╩╩═════════════════════╝\n");
+     }
+     printw ("\n");
+        k = getch();
+        if (k == KEY_LEFT) {
+           if (Curr == 2) Curr = 1;
+                else Curr++;
+        }
+        clear();
+        if (k == KEY_RIGHT) {
+           if (Curr == 1) Curr = 2;
+                else Curr--;
+        }
+        clear();
+    } while (k != 10);
+    if (Curr == 1) {
+            latitude = 'W';
+    } else latitude = 'E';
+
+    getch();
+    refresh();
+    endwin();
+
+Number2 ++;
+} /* End of 'Add' function */
+
+/* Функция для удаления элемента */
+void Del( void )
+{
+int i;
+
+Print();
+printw("Введите номер удаляемого элемента > ");
+scanf("%i", &i);
+if (i < 1 || i > Number2)
+{
+printw(stderr, "Элемент с номером %i не существует\n", i);
+return;
+}
+
+for (i--; i < Number2 - 1; i ++)
+Busstop[i] = Busstop[i + 1];
+
+Number2--;
+} /* End of 'Del' function */
+
+/* Функция для упорядочивания массива по фамилии */
+void Sort( void )
+{
+int i, j;
+ITEM Temp;
+
+for (j = Number2 - 1; j > 0; j--)
+for (i = 0; i < j; i ++)
+if (strcmp(Busstop[i].busstop, Busstop[i + 1].busstop) > 0)
+{
+Temp = Busstop[i];
+Busstop[i] = Busstop[i + 1];
+Busstop[i + 1] = Temp;
+}
+} /* End of 'Sort' function */
+
+/* Вывод меню и чтение номера выбранного пункта */
+int Menu( void )
+{
+int c = 0;
+
+while ((c < '0' || c > '6') && c != 27)
+{
+printf("0 : выход\n"
+"1 : добавить\n"
+"4 : вывести\n"
+"5 : упорядочить\n"
+"6 : удалить\n"
+">");
+c = getchar();
+printf("%c\n", c);
+}
+return c;
+} /* End of 'Menu' function */
+
+/* Основная функция */
+void main( void )
+{
+int Selection;
+
+while ((Selection =
+Menu()) != '0' && Selection != 27)
+switch (Selection)
+{
+case '1':
+Add();
+break;
+case '4':
+Print();
+break;
+case '5':
+Sort();
+break;
+case '6':
+Del();
+break;
+}
+}
+
