@@ -1,8 +1,9 @@
 #include <ncurses.h>
 #include <stdio.h>
 #include <locale.h>
+#include <string.h>
 
-/* Структура для хранения информации про один элемент */
+/* Структура для хранения информации про одного человека */
 typedef struct tagITEM {
 char busstop[20], gps1[9], gps2[9], longitude, latitude;
 } ITEM;
@@ -35,7 +36,7 @@ void PagePrint(void) {
 int i = 1, page = 10, ch = 0, a;
 noecho();
 keypad(stdscr, true);
-
+while (ch != 1) {
 initscr();
 printw("╔═══╦══════════════════════════════════════════════════╦═══════════╦═══╦═══════════╦═══╗\n"
        "║ N ║                   Busstop name                   ║ GPS long. ║Lon║ GPS leng. ║Len║\n");
@@ -77,7 +78,7 @@ a = getch();
   if (a == KEY_BACKSPACE) {
     ch = 1;
   }
-  }
+}
 getch();
 refresh();
 endwin();
@@ -92,7 +93,7 @@ void Add( void ) {
   char a, k;
   int i = 0, Curr = 1;
   if (Number2 == 99) {
-    printw(stderr, "Невозможно добавить еще один элемент\n");
+    printw("Невозможно добавить еще один элемент\n");
     return;
   }
   a = getch();
@@ -150,8 +151,8 @@ initscr();
         clear();
     } while (k != 10);
     if (Curr == 1) {
-	    longitude = 'W';
-    } else longitude = 'E';
+	    Busstop[Number2].longitude = 'W';
+    } else Busstop[Number2].longitude = 'E';
     getch();
     refresh();
     endwin();
@@ -164,8 +165,6 @@ do {
 a = getch();
 if(a != '\n' && a != '\t') { //&& i < 10) {
 Busstop[Number2].gps1[i++] = a;
-//printf ("%s\n", str);
-//printf ("%d", i);
 }
 }
 while(a != '\n');
@@ -200,8 +199,8 @@ do {
         clear();
     } while (k != 10);
     if (Curr == 1) {
-            latitude = 'W';
-    } else latitude = 'E';
+            Busstop[Number2].latitude = 'W';
+    } else Busstop[Number2].latitude = 'E';
 
     getch();
     refresh();
@@ -211,24 +210,37 @@ Number2 ++;
 } /* End of 'Add' function */
 
 /* Функция для удаления элемента */
-void Del( void )
-{
-int i;
+void Del( void ) {
 
-Print();
-printw("Введите номер удаляемого элемента > ");
-scanf("%i", &i);
-if (i < 1 || i > Number2)
-{
-printw(stderr, "Элемент с номером %i не существует\n", i);
-return;
-}
+  char i; //Setting the counter
+  char d, dt;
 
-for (i--; i < Number2 - 1; i ++)
-Busstop[i] = Busstop[i + 1];
+  initscr();
+  noecho();
+  keypad(stdscr, true);
 
-Number2--;
-} /* End of 'Del' function */
+  Print();
+
+  printw("Enter the number of the item to delete > \n");
+  i = getch();
+      i = i - 48;
+      //putchar(d);
+  if (i < 0 || i > Number2) {
+    printw("The element with the number %i does not exist\n", i);
+    return;
+  }
+
+  
+
+  for (i--; i < Number2 - 1; i++)
+    Busstop[i] = Busstop[i + 1];
+
+  Number2--;
+  getch();
+  Print();
+  refresh();
+  endwin();
+} // End of 'Del' function
 
 /* Функция для упорядочивания массива по фамилии */
 void Sort( void )
@@ -246,46 +258,188 @@ Busstop[i + 1] = Temp;
 }
 } /* End of 'Sort' function */
 
-/* Вывод меню и чтение номера выбранного пункта */
-int Menu( void )
-{
-int c = 0;
+int Menu() {
 
-while ((c < '0' || c > '6') && c != 27)
-{
-printf("0 : выход\n"
-"1 : добавить\n"
-"4 : вывести\n"
-"5 : упорядочить\n"
-"6 : удалить\n"
-">");
-c = getchar();
-printf("%c\n", c);
+  setlocale(LC_ALL, "");
+
+  int c = 0, k = 0;
+  int i = 0, Curr = 0;
+  initscr();
+  noecho();
+  keypad(stdscr, true);
+  do {
+	    if (Curr == 0) {
+              printw (
+              "╒═════════════════════════════╕\n"
+              "│    0 : Exit          <<<    │\n"
+              "╞═════════════════════════════╡\n");
+            } else {
+              printw (
+              "╒═════════════════════════════╕\n"
+              "│    0 : Exit                 │\n"
+              "╞═════════════════════════════╡\n");
+	    }
+	    if (Curr == 1) {
+              printw (
+              "│    1 : Add           <<<    │\n"
+              "╞═════════════════════════════╡\n");
+            } else {
+              printw (
+              "│    1 : Add                  │\n"
+              "╞═════════════════════════════╡\n");
+            }
+	    if (Curr == 2) {
+              printw (
+              "│    2 : Save in file  <<<    │\n"
+              "╞═════════════════════════════╡\n");
+            } else {
+              printw (
+              "│    2 : Save in file         │\n"
+              "╞═════════════════════════════╡\n");
+            }
+            if (Curr == 3) {
+              printw (
+              "│    3 : Download      <<<    │\n"
+              "╞═════════════════════════════╡\n");
+            } else {
+              printw (
+              "│    3 : Download             │\n"
+              "╞═════════════════════════════╡\n");
+            }
+	    if (Curr == 4) {
+              printw (
+              "│    4 : Print         <<<    │\n"
+              "╞═════════════════════════════╡\n");
+            } else {
+              printw (
+              "│    4 : Print                │\n"
+              "╞═════════════════════════════╡\n");
+            }
+	    if (Curr == 5) {
+              printw (
+              "│    5 : Sort          <<<    │\n"
+              "╞═════════════════════════════╡\n");
+            } else {
+              printw (
+              "│    5 : Sort                 │\n"
+              "╞═════════════════════════════╡\n");
+            }
+	    if (Curr == 6) {
+              printw (
+              "│    6 : Delete        <<<    │\n"
+              "╞═════════════════════════════╡\n");
+            } else {
+              printw (
+              "│    6 : Delete               │\n"
+              "╞═════════════════════════════╡\n");
+            }
+	    if (Curr == 7) {
+              printw (
+              "│    7 : Change        <<<    │\n"
+              "╘═════════════════════════════╛\n");
+            } else {
+              printw (
+              "│    7 : Change               │\n"
+              "╘═════════════════════════════╛\n");
+            }
+	    if (Curr == 8) {
+              printw (
+              "│    8 : Found about   <<<    │\n"
+              "╘═════════════════════════════╛\n");
+            } else {
+              printw (
+              "│    8 : Found about          │\n"
+              "╘═════════════════════════════╛\n");
+            }
+	    if (Curr == 9) {
+              printw (
+              "│    9 : Found         <<<    │\n"
+              "╘═════════════════════════════╛\n");
+            } else {
+              printw (
+              "│    9 : Found                │\n"
+              "╘═════════════════════════════╛\n");
+            }
+	    if (Curr == 10) {
+              printw (
+              "│   10 : Delete about  <<<    │\n"
+              "╘═════════════════════════════╛\n");
+            } else {
+              printw (
+              "│   10 : Delete about         │\n"
+              "╘═════════════════════════════╛\n");
+            }
+            if (Curr == 11) {
+              printw (
+              "│   11 : Page Print    <<<    │\n"
+              "╘═════════════════════════════╛\n");
+            } else {
+              printw (
+              "│   11 : Page Print           │\n"
+              "╘═════════════════════════════╛\n");
+            }
+     	 printw("\n");
+
+  k = getch();
+    if (k == KEY_DOWN) {
+            if (Curr == 11) Curr = 0;
+            else Curr++;
+            }
+            clear();
+    if (k == KEY_UP) {
+	    if (Curr == 0) Curr = 11;
+            else Curr--;
+            }
+            clear();
+
+    } while (k != 10);
+  getch();
+  refresh();
+  endwin();
+  return Curr;
 }
-return c;
-} /* End of 'Menu' function */
 
-/* Основная функция */
-void main( void )
-{
-int Selection;
+int main( void ) {
+  int Selection;
 
-while ((Selection =
-Menu()) != '0' && Selection != 27)
-switch (Selection)
-{
-case '1':
-Add();
-break;
-case '4':
-Print();
-break;
-case '5':
-Sort();
-break;
-case '6':
-Del();
-break;
+ while ((Selection = Menu()) != 48 && Selection != 27) {
+    switch (Selection) {
+        case 0:
+          return 0;
+          break;
+        case 1:
+          Add();
+          break;
+        //case 2:
+        //  Save();
+        //  break;
+        //case 3:
+        //  Load();
+        //  break;
+        case 4:
+          Print();
+          break;
+        //case 5:
+        //  MenuSortChoice();
+        //  break;
+        case 6:
+          Del();
+          break;
+        //case 7:
+        //  Change();
+        //  break;
+	//case 8:
+	//  FoundAbout();
+	//  break;
+	//case 9:
+	//  Found();
+	//  break;
+	//case 10:
+	//  DelAbout();
+	//  break;
+	case 11:
+	  PagePrint();
+	  break;
+    }
 }
-}
-
+} // End the function of the main menu
