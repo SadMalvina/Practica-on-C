@@ -12,9 +12,8 @@ typedef struct tagITEM { //Setting a structure with information about buses
   int endtimem;//Here you can enter an array of characters (a string) with the end time
   int routekm; //Here you can enter an array of characters with the all route in KM
 } ITEM; // Setting a name for the structure type "ITEM"
-//!RouteKM ввод в метрах приводить к км
-// Array for a maximum of 100 buses
-    ITEM Bus[100];
+// Array for a maximum of 101 buses
+    ITEM Bus[900];
 // Number of occupied elements in the array
     int Number = 0;
 
@@ -23,8 +22,6 @@ void Print( void ) {
   int i; //Setting the counter
   initscr();
   noecho();
- // keypad(stdscr, true);
-
     printw("╔═══╦═══════════╦══════════════╦═════════╦═══════╦═══════╗\n" //"Header" of the graphic
            "║ N ║NumberRoute║BusFleetNumber║StartTime║EndTime║RouteKm║\n"); //table when output
   for (i = 0; i < Number; i++) { //Setting the "for" counter to output array elements by number
@@ -38,14 +35,12 @@ void Print( void ) {
   getch();
   refresh();
   endwin();
-
 } // End of 'Print' function
 
 // A function to display all of the elements
 void PrintPage( void ) {
-  noecho();
-  keypad(stdscr, true);
-
+  noecho(); //Make sure that the characters you enter are not visible to the user
+  keypad(stdscr, true); //We do this so that the codes of the keys pressed by the user on the keyboard are read
   int i = 1, page = 10, ch = 0, a; //Setting the counter
   while (ch != 1) {
   initscr();
@@ -60,24 +55,23 @@ void PrintPage( void ) {
   }
   printw("╚═══╩═══════════╩══════════════╩═════════╩═══════╩═══════╝\n" //End of the graphic table
          "Last page - LEFT (<-) | Next page - RIGHT (->) | Exit - BACKSPACE\n");
-  //printw ("Your i = %d\n", i);
   a = getch();
-  if (a == KEY_LEFT) {
-    if (i > 11) {
+  if (a == KEY_LEFT) { //This function displays 11 items, moving the left arrow
+    if (i > 11) { //When the key is pressed, the value decreases by 10 if the number of points is more than 11
       i -= 20;
       page -= 10;
-      ch = 0;
-    } else if (i == 11) {
-      i = 91;
-      page = 100;
+      ch = 0; //The verification cycle will be delayed so that it does not end
+    } else if (i == 11) { //If the key is pressed and the number of points is 11, then the maximum values are taken
+      i = 981;
+      page = 900;
       ch = 0;
     }
-    clear();
+    clear(); //These 3 lines are for clearing and closing the ncurses screen
     refresh();
     endwin();
   }
-  if (a == KEY_RIGHT) {
-    if (i >= 100) {
+  if (a == KEY_RIGHT) { //The same function of movement, but not to the left, and to the right
+    if (i >= 900) {
       i = 1;
       page = 10;
       ch = 0;
@@ -89,7 +83,7 @@ void PrintPage( void ) {
     refresh();
     endwin();
   }
-  if (a == KEY_BACKSPACE) {
+  if (a == KEY_BACKSPACE) { //The exit part of the function, in which the loop gets the value "True" and ends, sends it to the menu
     ch = 1;
   }
   }
@@ -112,13 +106,13 @@ void PrintPage( void ) {
 
     printw("Enter the number of the item to delete > \n");
     i = getch();
-    i = i - 48;
-    if (i < 0 || i > Number) {
+    i = i - 48; //We read the ASCII code and reduce it by 48 to get the desired item number
+    if (i < 0 || i > Number) { //Checking for the existence of this element
       printw("The element with the number %i does not exist\n", i);
       return;
     }
     
-  for (i--; i < Number - 1; i++)
+  for (i--; i < Number - 1; i++) //Delete function by assigning the following element to the present
     Bus[i] = Bus[i + 1];
     Number --;
     getch();
@@ -134,7 +128,7 @@ void PrintPage( void ) {
   initscr();
   echo();
   keypad(stdscr, true);
-  if (Number == 99) {
+  if (Number == 100) { //Checking whether elements can be added
     printw("You can't add another element\n");
     return;
   }
@@ -146,11 +140,11 @@ void PrintPage( void ) {
     while (a != '\n') {
       if ((a > 57) || (a < 48)) {
         while ((a > 57 || a < 48) && a != KEY_BACKSPACE) {
-          if (a != '\n') printw("Only numbers\n");
+          if (a != '\n') printw("Only numbers\n"); //Checking for entering numbers
             a = getch();
           }
         }
-	if (a == KEY_BACKSPACE) {
+	if (a == KEY_BACKSPACE) { //"Erase" Function
           ch = ch / 10;
 	  delch();
 	  dh = 0;
@@ -165,7 +159,7 @@ void PrintPage( void ) {
           a = getch();
         }
       }
-      if (ch > 9999) {
+      if (ch > 9999) { //Overflow checking
         printw ("Overflow\n");
         dh = 0;
         ch = 0;
@@ -431,7 +425,7 @@ void SortNumberRoute( void ) {
   int i, j; //Setting the counters
   ITEM Temp;
 
-  for (j = Number - 1; j > 0; j --) {
+  for (j = Number - 1; j > 0; j --) { //Sorting by bubble
     for (i = 0; i < j; i ++) {
       if ((Bus[i].numberroute > Bus[i + 1].numberroute) > 0) {
         Temp = Bus[i];
@@ -444,7 +438,7 @@ void SortNumberRoute( void ) {
 } // End of 'SortNumberRoute' function
 
 // Function for ordering an array by number route
-void SortNumberRouteUbyvanie( void ) {
+void SortNumberRouteUbyvanie( void ) { //Sorting by bubble
   int i, j; //Setting the counters
   ITEM Temp;
 
@@ -461,7 +455,7 @@ void SortNumberRouteUbyvanie( void ) {
 } // End of 'SortNumberRouteUbyvanie' function
 
 // Function for ordering an array by bus fleet number
-void SortBusFleetNumber( void ) {
+void SortBusFleetNumber( void ) { //Sorting by bubble
   int i, j; //Setting the counters
   ITEM Temp;
 
@@ -478,7 +472,7 @@ void SortBusFleetNumber( void ) {
 } // End of 'SortBusFleetNumber' function
 
 // Function for ordering an array by bus fleet number
-void SortBusFleetNumberUbyvanie( void ) {
+void SortBusFleetNumberUbyvanie( void ) { //Sorting by bubble
   int i, j; //Setting the counters
   ITEM Temp;
 
@@ -495,7 +489,7 @@ void SortBusFleetNumberUbyvanie( void ) {
 } // End of 'SortBusFleetNumberUbyvanie' function
 
 // Function for ordering an array by start time
-void SortStartTime( void ) {
+void SortStartTime( void ) { //Sorting by bubble
   int i, j; //Setting the counters
   ITEM Temp;
 
@@ -512,7 +506,7 @@ void SortStartTime( void ) {
 } // End of 'SortStartTime' function
 
 // Function for ordering an array by start time
-void SortStartTimeUbyvanie( void ) {
+void SortStartTimeUbyvanie( void ) { //Sorting by bubble
   int i, j; //Setting the counters
   ITEM Temp;
 
@@ -529,7 +523,7 @@ void SortStartTimeUbyvanie( void ) {
 } // End of 'SortStartTimeUbyvanie' function
 
 // Function for ordering an array by end time
-void SortEndTime( void ) {
+void SortEndTime( void ) { //Sorting by bubble
   int i, j; //Setting the counters
   ITEM Temp;
 
@@ -546,7 +540,7 @@ void SortEndTime( void ) {
 } // End of 'SortEndTime' function
 
 // Function for ordering an array by end time
-void SortEndTimeUbyvanie( void ) {
+void SortEndTimeUbyvanie( void ) { //Sorting by bubble
   int i, j; //Setting the counters
   ITEM Temp;
 
@@ -563,7 +557,7 @@ void SortEndTimeUbyvanie( void ) {
 } // End of 'SortEndTimeUbyvanie' function
 
 // Function for ordering an array by route in KM
-void SortRouteKM( void ) {
+void SortRouteKM( void ) { //Sorting by bubble
   int i, j; //Setting the counters
   ITEM Temp;
 
@@ -580,7 +574,7 @@ void SortRouteKM( void ) {
 } // End of 'SortRouteKM' function
 
 // Function for ordering an array by route in KM
-void SortRouteKMUbyvanie( void ) {
+void SortRouteKMUbyvanie( void ) { //Sorting by bubble
   int i, j; //Setting the counters
   ITEM Temp;
 
@@ -597,11 +591,11 @@ void SortRouteKMUbyvanie( void ) {
 } // End of 'SortRouteKMUbyvanie' function
 
 //Function change information
-void Change (void) {
+void Change (void) { 
     initscr();
     echo();
     keypad(stdscr, true);
-    int a, Curr = 1, dh = 0, ch = 0;
+    int a, Curr = 1, dh = 0, ch = 0; //Setting logical variables
     int tapok = 0, Num = 0; //Setting the counters
     Print();
     printw ("╔════════════════════════════════════════════════════════════╗\n"
@@ -631,7 +625,7 @@ void Change (void) {
     printw ("%d\n", Num);
     Num--;
     getchar();
-    do {
+    do { //Menu for selecting changes
       printw ("╔════════════════════════════════════════════════════════════╗\n"
               "║         Enter the desired character to change:             ║\n"
               "╠════════════════════════════════════════════════════════════╣\n");
@@ -905,7 +899,7 @@ void Change (void) {
         ch = 0;
 	printw ("\n╔════════════════════════╗\n"
                 "║ Please, enter minutes. ║\n"
-                 ╚════════════════════════╝\n");
+                "╚════════════════════════╝\n");
 	a = getch();
         while (dh != 1) {
             while (a != '\n') {
@@ -1255,13 +1249,9 @@ void Save (void) {
 				printw("Error occured while opening a file for writing!\n");
 				return ;
 			} else if (F) {
-				//fprintf(F, "%d\n", number);
-				//for (int i = 0; i < number; i++)
 				fwrite(&Number, sizeof(int), 1, F);
-
 				for (; i < Number; i++)
-
-					fwrite(&Bus[i], sizeof(ITEM), 1, F);
+				fwrite(&Bus[i], sizeof(ITEM), 1, F);
 			}
 		}
 		fclose(F);
